@@ -11,7 +11,7 @@
 #---------------------------#
 
 youtube_version=17.26.35
-youtube_apk=https://us.softpedia-secure-download.com/dl/01ccf9db9bc2bd6e329d324ce9d6ecfd/62cd54e7/800000107/apk/YouTube-$youtube_version.apk
+youtube_apk=https://github.com/XDream8/revanced-creator/releases/download/v0.1/YouTube-$youtube_version.apk
 
 revanced_cli_version=2.5.3
 revanced_patches_version=2.13.3
