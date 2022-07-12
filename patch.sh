@@ -5,21 +5,25 @@
 #---------------------------#
 #           deps            #
 #---------------------------#
-# wget, curl or $downloader #
+# curl, wget or $downloader #
 # (optional)  awk           #
 #         java(17)          #
+#          grep             #
 #---------------------------#
 
-youtube_version=17.26.35
-youtube_apk=https://github.com/XDream8/revanced-creator/releases/download/v0.1/YouTube-$youtube_version.apk
-
-revanced_cli_version=2.5.3
-revanced_patches_version=2.13.3
-revanced_integrations_version=0.23.0
+get_latest_version_info() {
+	if [ ! "$(command -v curl)" ]; then
+		printf '%s\n' "curl is required, exiting!"
+		exit 1
+	fi
+	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
+	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
+	revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | grep -o 'revanced/revanced-integrations/releases/download/v[0-9].*/.*.apk' | grep -o "[0-9].*" | cut -d"/" -f1)
+}
 
 remove_old() {
 	printf '%s\n' "removing olds"
-	rm -f revanced-cli-*.jar revanced-patches-*.jar app-release-unsigned.apk YouTube-$youtube_version.apk
+	rm -f revanced-cli-*.jar revanced-patches-*.jar app-release-unsigned.apk YouTube-$youtube_version.apk *.keystore
 }
 
 download_needed() {
@@ -73,6 +77,9 @@ patch() {
 
 main() {
 
+	youtube_version=17.26.35
+	youtube_apk=https://github.com/XDream8/revanced-creator/releases/download/v0.1/YouTube-$youtube_version.apk
+
 	if [ -z "$downloader" ] && [ "$(command -v curl)" ]; then
 		downloader="curl -OL"
 	elif [ -z "$downloader" ] && [ "$(command -v wget)" ]; then
@@ -86,9 +93,11 @@ main() {
 
 	[ -z "$nonroot" ] && nonroot=1
 
+	get_latest_version_info
 	remove_old
 	download_needed
 	patch
+	exit 0
 }
 
 main
