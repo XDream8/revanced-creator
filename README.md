@@ -17,7 +17,16 @@ $ cd revanced-creator
 $ chmod +x patch.sh
 $ ./patch.sh
 ```
-### downloader option
+### options
+#### nonroot(defaults to 1)
+```sh
+$ nonroot=1 ./patch.sh
+```
+#### downloader
 ```sh
 $ downloader="axel -n 16" ./patch.sh
+```
+#### or you can use these two options together
+```sh
+$ nonroot=1 downloader="axel -n 16" ./patch.sh
 ```

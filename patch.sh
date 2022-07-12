@@ -45,26 +45,30 @@ download_needed() {
 }
 
 patch() {
-	printf '%s\n' "patching process started"
+	if [ $nonroot = 1 ]; then
+		root_text="non-root"
+	else
+		root_text="root"
+	fi
+	printf '%s\n' "patching process started($root_text)"
 	printf '%s\n' "it may take a while please be patient"
-	java -jar revanced-cli-$revanced_cli_version-all.jar \
-	 -a YouTube-$youtube_version.apk \
-   -c \
-	 -o revanced-$youtube_version.apk \
-	 -b revanced-patches-$revanced_patches_version.jar \
-	 -m app-release-unsigned.apk \
-	 -i microg-support \
-	 -i seekbar-tapping \
-	 -i general-ads \
-	 -i video-ads \
-	 -i custom-branding \
-	 -i premium-heading \
-	 -i minimized-playback \
-	 -i old-quality-layout \
-	 -i disable-create-button \
-	 -i hide-cast-button \
-	 -i amoled \
-	 -i custom-playback-speed
+	if [ $nonroot = 1 ]; then
+		java -jar revanced-cli-$revanced_cli_version-all.jar \
+		 -a YouTube-$youtube_version.apk \
+		 -c \
+		 -o revanced-$youtube_version.apk \
+		 -b revanced-patches-$revanced_patches_version.jar \
+		 -m app-release-unsigned.apk
+	else
+		java -jar revanced-cli-$revanced_cli_version-all.jar \
+		 -a YouTube-$youtube_version.apk \
+		 -c \
+		 -o revanced-$youtube_version.apk \
+		 -b revanced-patches-$revanced_patches_version.jar \
+		 -m app-release-unsigned.apk \
+		 -e microg-support \
+		 --mount
+	fi
 }
 
 main() {
@@ -79,6 +83,8 @@ main() {
 		printf '%s\n' "please install a proper downloader(wget, curl)"
 		exit 1
 	fi
+
+	[ -z "$nonroot" ] && nonroot=1
 
 	remove_old
 	download_needed
