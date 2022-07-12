@@ -4,5 +4,6 @@ revanced-patches-*.jar
 app-release-unsigned.apk
 revanced*.keystore
 revanced-*.apk
-YouTube*.apk
+YouTube*
+youtube*
 .nvimlog
