@@ -5,9 +5,15 @@ this script first downloads the latest [revanced-cli](https://github.com/revance
 - (optional)awk
 - java(17)
 ## usage
+```
+$ mkdir -p revanced
+$ cd revanced
+$ sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+```
+* or
 ```sh
-$ git clone https://github.com/XDream8/revanced-patcher
-$ cd revanced-patcher
+$ git clone https://github.com/XDream8/revanced-creator
+$ cd revanced-creator
 $ chmod +x patch.sh
 $ ./patch.sh
 ```
