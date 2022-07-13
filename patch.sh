@@ -101,8 +101,12 @@ main() {
 		exit 1
 	fi
 
-	if [ ! "$(command -v java)" ]; then
+	JAVA_VERSION="$(java -version 2>&1 | grep -oe "version \".*\"" | awk 'match($0, /([0-9]+)/) {print substr($0, RSTART, RLENGTH)}')"
+	if [ ! "$(command -v java)" ] ; then
 		printf '%b\n' "${RED}java 17 is required, exiting!${NC}"
+		exit 1
+	elif [ ! $JAVA_VERSION -eq 17 ]; then
+		printf '%b\n' "${RED}java 17 is required but you have version $JAVA_VERSION, exiting!${NC}"
 		exit 1
 	fi
 
