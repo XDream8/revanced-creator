@@ -1,49 +1,59 @@
 #!/bin/sh
 
 #---------------------------#
-#       Made by XDream8     #
+#     Made by XDream8       #
 #---------------------------#
 #           deps            #
 #---------------------------#
 # curl, wget or $downloader #
-# (optional)  awk           #
+#          awk              #
 #         java(17)          #
 #          grep             #
 #---------------------------#
 
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+GREEN='\033[1;32m'
+CYAN='\033[0;36m'
+NC='\033[0m'
+
 get_latest_version_info() {
 	if [ ! "$(command -v curl)" ]; then
-		printf '%s\n' "curl is required, exiting!"
+		printf '%b\n' "${RED}curl is required, exiting!${NC}"
 		exit 1
 	fi
+	printf '%b\n' "${BLUE}getting latest versions info${NC}"
 	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
 	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
 	revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | grep -o 'revanced/revanced-integrations/releases/download/v[0-9].*/.*.apk' | grep -o "[0-9].*" | cut -d"/" -f1)
+	for i in \
+		"revanced_cli_version=$revanced_cli_version" \
+		"revanced_patches_version=$revanced_patches_version" \
+		"revanced_integrations_version=$revanced_integrations_version"
+	do
+		printf '%b\n' "${YELLOW}$i${NC}"
+	done
 }
 
 remove_old() {
-	printf '%s\n' "removing olds"
+	printf '%b\n' "${BLUE}removing olds${NC}"
 	rm -f revanced-cli-*.jar revanced-patches-*.jar app-release-unsigned.apk YouTube-$youtube_version.apk *.keystore
 }
 
 download_needed() {
 	# number
-	if [ "$(command -v awk)" ]; then
-		n=0
-	fi
-  printf '%s\n' "Downloading revanced-cli, revanced-patches and revanced-integrations"
+	n=0
+
+  printf '%b\n' "${BLUE}Downloading revanced-cli, revanced-patches and revanced-integrations${NC}"
 	for i in \
 		https://github.com/revanced/revanced-cli/releases/download/v$revanced_cli_version/revanced-cli-$revanced_cli_version-all.jar \
 		https://github.com/revanced/revanced-patches/releases/download/v$revanced_patches_version/revanced-patches-$revanced_patches_version.jar \
 		https://github.com/revanced/revanced-integrations/releases/download/v$revanced_integrations_version/app-release-unsigned.apk \
 		$youtube_apk
 	do
-		if [ "$(command -v awk)" ]; then
-			n=$(awk "BEGIN {print $n+1}")
-			printf '%s\n' "$n) downloading $i"
-		else
-			printf '%s\n' "downloading $i"
-		fi
+		n=$(awk "BEGIN {print $n+1}")
+		printf '%b\n' "${CYAN}$n) ${YELLOW}downloading $i${NC}"
 		$downloader $i
 	done
 }
@@ -54,8 +64,8 @@ patch() {
 	else
 		root_text="root"
 	fi
-	printf '%s\n' "patching process started($root_text)"
-	printf '%s\n' "it may take a while please be patient"
+	printf '%b\n' "${BLUE}patching process started(${RED}$root_text${BLUE})${NC}"
+	printf '%b\n' "${BLUE}it may take a while please be patient${NC}"
 	if [ $nonroot = 1 ]; then
 		java -jar revanced-cli-$revanced_cli_version-all.jar \
 		 -a YouTube-$youtube_version.apk \
@@ -87,7 +97,7 @@ main() {
 	fi
 
 	if [ ! -z "$downloader" ] && [ ! "$(command -v $downloader)" ]; then
-		printf '%s\n' "please install a proper downloader(wget, curl)"
+		printf '%b\n' "${RED}please install a proper downloader(curl, wget)${NC}"
 		exit 1
 	fi
 

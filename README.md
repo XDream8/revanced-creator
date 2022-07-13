@@ -2,7 +2,7 @@
 this script first downloads the latest [revanced-cli](https://github.com/revanced/revanced-cli), [revanced-patches](https://github.com/revanced/revanced-patches) and [revanced-integrations](https://github.com/revanced/revanced-integrations). then it downloads the latest supported youtube version and patches it according to [revanced-documentation](https://github.com/revanced/revanced-documentation)
 ## deps
 - curl(curl is required to get latest versions of revanced-*)
-- (optional)awk
+- awk
 - java(17)
 - grep
 ## usage
