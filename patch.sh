@@ -96,10 +96,16 @@ main() {
 		downloader="wget"
 	fi
 
-	if [ ! -z "$downloader" ] && [ ! "$(command -v $downloader)" ]; then
-		printf '%b\n' "${RED}please install a proper downloader(curl, wget)${NC}"
+	if [ ! "$(command -v $downloader)" ]; then
+		printf '%b\n' "${RED}curl or wget is required, exiting!${NC}"
 		exit 1
 	fi
+
+	if [ ! "$(command -v java)" ]; then
+		printf '%b\n' "${RED}java 17 is required, exiting!${NC}"
+		exit 1
+	fi
+
 
 	[ -z "$nonroot" ] && nonroot=1
 
