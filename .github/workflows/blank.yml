@@ -27,7 +27,7 @@ jobs:
           ./patch.sh
 
        - name: Upload Build Artifact
-       - uses: actions/upload-artifact@v3
+         uses: actions/upload-artifact@v3
           with:
             name: revanced
             path: *.apk
