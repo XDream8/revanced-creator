@@ -24,7 +24,7 @@ jobs:
           git clone https://GitHub.com/XDream8/revanced-creator "vanced"
           cd vanced
           chmod +x patch.sh
-          ./patch.sh
+          nonroot=0 ./patch.sh
 
        - name: Upload Build Artifact
          uses: actions/upload-artifact@v3
