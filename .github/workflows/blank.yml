@@ -11,4 +11,6 @@ jobs:
        - uses: actions/checkout@v3
        - name: Run Stuff And Build
          run: |
-          
+          sudo apt-get update
+          sudo apt-get upgrade
+          sudo apt install openjdk-17-jdk openjdk-17-jre
