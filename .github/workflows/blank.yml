@@ -14,7 +14,7 @@ jobs:
           sudo apt-get update
           sudo apt-get upgrade
           sudo apt install curl grep openjdk-17-jdk openjdk-17-jre
-          git clone https://GitHub.com/XDream8/revanced-creator -D "vanced"
+          git clone https://GitHub.com/XDream8/revanced-creator "vanced"
           cd vanced
           chmod +x patch.sh
           ./patch.sh
