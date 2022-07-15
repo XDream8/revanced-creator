@@ -23,7 +23,7 @@ jobs:
           sudo apt install curl grep
           git clone https://GitHub.com/XDream8/revanced-creator "revanced"
           cd revanced
-          nonroot=1 ./patch.s
+          nonroot=1 ./patch.sh
           nonroot=0 ./patch.sh
 
        - name: Upload Build Artifact
