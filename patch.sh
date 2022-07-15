@@ -73,14 +73,14 @@ patch() {
 		java -jar revanced-cli-$revanced_cli_version-all.jar \
 		 -a YouTube-$youtube_version.apk \
 		 -c \
-		 -o revanced-$youtube_version.apk \
+		 -o revanced-$youtube_version-$root_text.apk \
 		 -b revanced-patches-$revanced_patches_version.jar \
 		 -m app-release-unsigned.apk
 	else
 		java -jar revanced-cli-$revanced_cli_version-all.jar \
 		 -a YouTube-$youtube_version.apk \
 		 -c \
-		 -o revanced-$youtube_version.apk \
+		 -o revanced-$youtube_version-$root_text.apk \
 		 -b revanced-patches-$revanced_patches_version.jar \
 		 -m app-release-unsigned.apk \
 		 -e microg-support \
