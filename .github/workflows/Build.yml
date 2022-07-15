@@ -24,8 +24,10 @@ jobs:
           git clone https://GitHub.com/XDream8/revanced-creator "revanced"
           cd revanced
           curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/vanced-microg.apk
-          nonroot=1 ./patch.sh
           nonroot=0 ./patch.sh
+          mkdir root
+          mv revanced-*-root.apk root/.
+          nonroot=1 ./patch.sh
 
        - name: Upload Build Artifact
          uses: actions/upload-artifact@v3
@@ -39,4 +41,4 @@ jobs:
          uses: actions/upload-artifact@v3
          with:
            name: revanced-root
-           path: revanced/revanced-*-root.apk
+           path: revanced/root/revanced-*-root.apk
