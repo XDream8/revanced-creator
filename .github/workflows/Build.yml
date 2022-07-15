@@ -1,0 +1,33 @@
+name: CI
+
+on:
+   workflow_dispatch:
+
+jobs:
+   build:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v3
+
+       - name: Install Java
+         uses: actions/setup-java@v3
+         with:
+           distribution: 'zulu'
+           java-version: '17'
+
+       - name: Run Stuff And Build
+         run: |
+          sudo apt-get update
+          sudo apt-get upgrade
+          sudo apt install curl grep
+          git clone https://GitHub.com/XDream8/revanced-creator "vanced"
+          cd vanced
+          chmod +x patch.sh
+          nonroot=0 ./patch.sh
+
+       - name: Upload Build Artifact
+         uses: actions/upload-artifact@v3
+         with:
+           name: revanced
+           path: vanced/*.apk
