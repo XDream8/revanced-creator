@@ -18,11 +18,14 @@ GREEN='\033[1;32m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-get_latest_version_info() {
-	if [ ! "$(command -v curl)" ]; then
-		printf '%b\n' "${RED}curl is required, exiting!${NC}"
+check_dep() {
+	if [ ! "$(command -v $1)" ]; then
+		printf '%b\n' "${RED}$2${NC}"
 		exit 1
 	fi
+}
+
+get_latest_version_info() {
 	printf '%b\n' "${BLUE}getting latest versions info${NC}"
 	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
 	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
@@ -96,20 +99,19 @@ main() {
 		downloader="wget"
 	fi
 
-	if [ ! "$(command -v $downloader)" ]; then
-		printf '%b\n' "${RED}curl or wget is required, exiting!${NC}"
-		exit 1
-	fi
+	check_dep curl "curl is required, exiting!"
+	check_dep $downloader "$downloader is missing, exiting!"
+	check_dep java "java 17 is required, exiting!"
+	check_dep awk "awk is required, exiting!"
+	check_dep grep "grep is required, exiting!"
 
 	JAVA_VERSION="$(java -version 2>&1 | grep -oe "version \".*\"" | awk 'match($0, /([0-9]+)/) {print substr($0, RSTART, RLENGTH)}')"
-	if [ ! "$(command -v java)" ] ; then
-		printf '%b\n' "${RED}java 17 is required, exiting!${NC}"
-		exit 1
-	elif [ ! $JAVA_VERSION -eq 17 ]; then
+	if [ $JAVA_VERSION -lt 17 ]; then
 		printf '%b\n' "${RED}java 17 is required but you have version $JAVA_VERSION, exiting!${NC}"
 		exit 1
+	else
+		printf '%b\n' "${YELLOW}java version $JAVA_VERSION found${NC}"
 	fi
-
 
 	[ -z "$nonroot" ] && nonroot=1
 
