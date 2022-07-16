@@ -46,7 +46,7 @@ remove_old() {
 		[ ! -f "$youtube_filename" ] && [ -f "YouTube-*.apk" ] && (printf '%s\n' "${RED}removing old youtube${NC}" && rm YouTube-$youtube_version )
 		rm -f $integrations_filename
 	else
-		find . -maxdepth 1 -type f ! \( -name ".git*" -or -name "LICENSE" -or -name "README.md" -or -name "patch.sh" -or -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$youtube_filename" \) -delete
+		find . -maxdepth 1 -type f \( -name "revanced-*.jar" -or -name "$integrations_filename" \) ! \( -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$youtube_filename" \) -delete
 	fi
 }
 
