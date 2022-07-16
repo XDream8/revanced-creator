@@ -41,7 +41,7 @@ get_latest_version_info() {
 
 remove_old() {
 	printf '%b\n' "${BLUE}removing olds${NC}"
-	rm -f revanced-cli-*.jar revanced-patches-*.jar app-release-unsigned.apk YouTube-$youtube_version.apk *.keystore
+	rm -f revanced-cli-*.jar revanced-patches-*.jar app-release-unsigned.apk YouTube-$youtube_version.apk
 }
 
 download_needed() {
