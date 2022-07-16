@@ -40,13 +40,13 @@ get_latest_version_info() {
 }
 
 remove_old() {
-	if [ "$(command -v find)" ]; then
-		[ ! -f "revanced-cli-$revanced_cli_version-all.jar" ] && [ -f "revanced-cli-*-all.jar" ] && ( printf '%b\n' "${RED}removing old revanced-cli${NC}" && rm -f revanced-cli-*.jar )
-		[ ! -f "revanced-patches-$revanced_patches_version-all.jar" ] && [ -f "revanced-patches-*-all.jar" ] && (printf '%s\n' "${RED}removing old revanced-patches${NC}" && rm -f revanced-patches-*.jar )
-		[ ! -f "YouTube-$youtube_version.apk" ] && [ -f "YouTube-*.apk" ] && (printf '%s\n' "${RED}removing old youtube${NC}" && rm YouTube-$youtube_version )
-		rm -f app-release-unsigned.apk
+	if [ ! "$(command -v find)" ]; then
+		[ ! -f "$cli_filename" ] && [ -f "revanced-cli-*-all.jar" ] && ( printf '%b\n' "${RED}removing old revanced-cli${NC}" && rm -f revanced-cli-*.jar )
+		[ ! -f "$patches_filename" ] && [ -f "revanced-patches-*-all.jar" ] && (printf '%s\n' "${RED}removing old revanced-patches${NC}" && rm -f revanced-patches-*.jar )
+		[ ! -f "$youtube_filename" ] && [ -f "YouTube-*.apk" ] && (printf '%s\n' "${RED}removing old youtube${NC}" && rm YouTube-$youtube_version )
+		rm -f $integrations_filename
 	else
-		exit
+		find . -maxdepth 1 -type f ! \( -name ".git*" -or -name "LICENSE" -or -name "README.md" -or -name "patch.sh" -or -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$youtube_filename" \) -delete
 	fi
 }
 
@@ -77,14 +77,14 @@ patch() {
 	printf '%b\n' "${BLUE}it may take a while please be patient${NC}"
 	if [ $nonroot = 1 ]; then
 		java -jar $cli_filename \
-		 -a YouTube-$youtube_version.apk \
+		 -a $youtube_filename \
 		 -c \
 		 -o revanced-$youtube_version-$root_text.apk \
 		 -b $patches_filename \
 		 -m $integrations_filename
 	else
 		java -jar $cli_filename \
-		 -a YouTube-$youtube_version.apk \
+		 -a $youtube_filename \
 		 -c \
 		 -o revanced-$youtube_version-$root_text.apk \
 		 -b $patches_filename \
@@ -97,7 +97,8 @@ patch() {
 main() {
 
 	youtube_version=17.26.35
-	youtube_apk=https://github.com/XDream8/revanced-creator/releases/download/v0.1/YouTube-$youtube_version.apk
+	youtube_filename=YouTube-$youtube_version.apk
+	youtube_apk=https://github.com/XDream8/revanced-creator/releases/download/v0.1/$youtube_filename
 
 	if [ -z "$downloader" ] && [ "$(command -v curl)" ]; then
 		downloader="curl -qLJO"
@@ -122,12 +123,12 @@ main() {
 	[ -z "$nonroot" ] && nonroot=1
 
 	get_latest_version_info
-	remove_old
 
 	cli_filename=revanced-cli-$revanced_cli_version-all.jar
 	patches_filename=revanced-patches-$revanced_patches_version.jar
 	integrations_filename=app-release-unsigned.apk
 
+	remove_old
 	download_needed
 	patch
 	exit 0

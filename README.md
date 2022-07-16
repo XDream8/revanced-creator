@@ -7,6 +7,7 @@ this script first downloads the latest [revanced-cli](https://github.com/revance
 - awk
 - java(17)
 - grep
+- (optional)find(we use it to remove old versions of revanced-*, if there is any)
 ## usage
 ```sh
 $ mkdir -p revanced
