@@ -16,29 +16,30 @@ jobs:
            distribution: 'zulu'
            java-version: '17'
 
-       - name: Run Stuff And Build
+       - name: Update the system
          run: |
           sudo apt-get update
           sudo apt-get upgrade
           sudo apt install curl grep
-          git clone https://GitHub.com/XDream8/revanced-creator "revanced"
-          cd revanced
-          curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/vanced-microg.apk
-          nonroot=0 ./patch.sh
-          mkdir root
-          mv revanced-*-root.apk root/.
-          nonroot=1 ./patch.sh
 
-       - name: Upload Build Artifact
+       - name: Build root variant
+         run: nonroot=0 sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+
+       - name: Upload Build Artifact(root)
+         uses: actions/upload-artifact@v3
+         with:
+           name: revanced-root
+           path: revanced-*-root.apk
+
+       - name: Build non-root variant
+         run: |
+          sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+          curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/vanced-microg.apk
+
+       - name: Upload Build Artifact(non-root)
          uses: actions/upload-artifact@v3
          with:
            name: revanced-non-root
            path: |
-            revanced/revanced-*-non-root.apk
-            revanced/vanced-microg.apk
-
-       - name: Upload Build Artifact
-         uses: actions/upload-artifact@v3
-         with:
-           name: revanced-root
-           path: revanced/root/revanced-*-root.apk
+            revanced-*-non-root.apk
+            vanced-microg.apk
