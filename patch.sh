@@ -102,7 +102,7 @@ build_apk() {
 		$base_cmd \
 		$additional_args \
 		$1
-	elif [ "$1" ]; then
+	elif [ "$1" ] && [ "$additional_args" = "" ]; then
 		# root
 		$base_cmd \
 		$1
@@ -165,7 +165,7 @@ main() {
 	[ -z "$additional_args" ] && additional_args=""
 
 	if [ $nonroot = 0 ]; then
-		printf '%b\n' "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds"
+		printf '%b\n' "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds${NC}"
 		sleep 5s
 		checkadb
 	fi
