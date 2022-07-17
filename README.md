@@ -1,7 +1,8 @@
 # revanced-creator
 [![CI](https://github.com/XDream8/revanced-creator/actions/workflows/Build.yml/badge.svg)](https://github.com/XDream8/revanced-creator/actions/workflows/Build.yml) \
 this script first downloads the latest [revanced-cli](https://github.com/revanced/revanced-cli), [revanced-patches](https://github.com/revanced/revanced-patches) and [revanced-integrations](https://github.com/revanced/revanced-integrations). then it downloads the latest supported youtube version and patches it according to [revanced-documentation](https://github.com/revanced/revanced-documentation) \
-**You can find prebuilt versions of revanced in [github actions](https://github.com/XDream8/revanced-creator/actions) (they are all built using this script. also non-root variant there includes vanced-microg.apk in it)**
+Now we even support patching YouTube-Music \
+**Check out [github actions](https://github.com/XDream8/revanced-creator/actions) (they are all built using this script. also non-root variant there includes vanced-microg.apk inside it)**
 ## deps
 - curl(curl is required to get latest versions of revanced-*)
 - awk
@@ -32,7 +33,7 @@ $ ./patch.sh
 $ export what_to_patch="youtube-music"
 $ ./patch.sh
 ```
-#### youtube_version(only 2 versions for now. 17.26.35 and 17.27.39)
+#### apk_version(YouTube: 17.26.35 and 17.27.39, YouTube-Music: 5.14.53)
 ```sh
 $ export youtube_version=17.27.39
 $ ./patch.sh
