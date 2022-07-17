@@ -21,17 +21,28 @@ $ cd revanced-creator
 $ ./patch.sh
 ```
 ### options
+#### additional_args
+we include `enable-wide-searchbar` patch and exclude `hide-shorts-button` here
+```sh
+$ export additional_args="-i enable-wide-searchbar -e hide-shorts-button"
+$ ./patch.sh
+```
 #### nonroot(defaults to 1)
 ```sh
-$ nonroot=1 ./patch.sh
+$ export nonroot=1
+$ ./patch.sh
 ```
 #### downloader
 ```sh
-$ downloader="axel -n 16" ./patch.sh
+$ export downloader="axel -n 16"
+$ ./patch.sh
 ```
-#### or you can use these two options together
+#### or you can use all these options together
 ```sh
-$ nonroot=1 downloader="axel -n 16" ./patch.sh
+$ export nonroot=1
+$ export downloader="axel -n 16"
+$ export additional_args="-i enable-wide-searchbar -e hide-shorts-button"
+$ ./patch.sh
 ```
 ### mentions
 - @halal-beef [added CI](https://github.com/XDream8/revanced-creator/pull/3) which was a great help

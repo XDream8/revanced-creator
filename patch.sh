@@ -176,8 +176,8 @@ main() {
 	patches_filename=revanced-patches-$revanced_patches_version.jar
 	integrations_filename=app-release-unsigned.apk
 
-	# remove_old
-	# download_needed
+	remove_old
+	download_needed
 	patch
 	exit 0
 }
