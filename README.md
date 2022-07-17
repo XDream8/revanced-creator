@@ -27,6 +27,11 @@ we include `enable-wide-searchbar` patch and exclude `hide-shorts-button` here
 $ export additional_args="-i enable-wide-searchbar -e hide-shorts-button"
 $ ./patch.sh
 ```
+#### what_to_patch(defaults to youtube)
+```sh
+$ export what_to_patch="youtube-music"
+$ ./patch.sh
+```
 #### youtube_version(only 2 versions for now. 17.26.35 and 17.27.39)
 ```sh
 $ export youtube_version=17.27.39
