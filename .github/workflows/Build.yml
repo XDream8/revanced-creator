@@ -24,6 +24,8 @@ jobs:
 
        - name: Build non-root variant
          run: |
+          curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/revanced-creator.keystore
+          export additional_args="--keystore=revanced-creator.keystore"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
           curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/vanced-microg.apk
 
