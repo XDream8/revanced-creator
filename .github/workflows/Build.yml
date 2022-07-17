@@ -22,15 +22,6 @@ jobs:
           sudo apt-get upgrade
           sudo apt install curl grep
 
-       - name: Build root variant
-         run: nonroot=0 sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
-
-       - name: Upload Build Artifact(root)
-         uses: actions/upload-artifact@v3
-         with:
-           name: revanced-root
-           path: revanced-*-root.apk
-
        - name: Build non-root variant
          run: |
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
