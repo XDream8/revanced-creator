@@ -42,8 +42,8 @@ get_latest_version_info() {
 remove_old() {
 	if [ ! "$(command -v find)" ]; then
 		[ ! -f "$cli_filename" ] && [ -f "revanced-cli-*-all.jar" ] && ( printf '%b\n' "${RED}removing old revanced-cli${NC}" && rm -f revanced-cli-*.jar )
-		[ ! -f "$patches_filename" ] && [ -f "revanced-patches-*-all.jar" ] && (printf '%s\n' "${RED}removing old revanced-patches${NC}" && rm -f revanced-patches-*.jar )
-		[ ! -f "$youtube_filename" ] && [ -f "YouTube-*.apk" ] && (printf '%s\n' "${RED}removing old youtube${NC}" && rm YouTube-$youtube_version )
+		[ ! -f "$patches_filename" ] && [ -f "revanced-patches-*-all.jar" ] && (printf '%b\n' "${RED}removing old revanced-patches${NC}" && rm -f revanced-patches-*.jar )
+		[ ! -f "$youtube_filename" ] && [ -f "YouTube-*.apk" ] && (printf '%b\n' "${RED}removing old youtube${NC}" && rm YouTube-$youtube_version )
 		rm -f $integrations_filename
 	else
 		find . -maxdepth 1 -type f \( -name "revanced-*.jar" -or -name "$integrations_filename" \) ! \( -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$youtube_filename" \) -delete
@@ -67,6 +67,33 @@ download_needed() {
 	done
 }
 
+checkadb() {
+	if [ ! "$(pidof adb)" ]; then
+		if [ "$(command -v rdo)" ]; then
+			sudo=rdo
+		elif [ "$(command -v doas)" ]; then
+			sudo=doas
+		else
+			sudo=sudo
+		fi
+	fi
+
+	if [ $nonroot = 0 ]; then
+		if [ ! "$(pidof adb)" ]; then
+			printf '%b\n' "${YELLOW}starting adb server${NC}"
+			$sudo adb start-server
+		fi
+
+		device_id=$(adb devices | awk 'FNR == 2 {print $1}')
+		if [ "$device_id" = "" ]; then
+			printf '%b\n' "${RED}your phone is not connected to pc${NC}"
+			exit 1
+		else
+			printf '%b\n' "${YELLOW}adb device_id=$device_id"
+		fi
+	fi
+}
+
 patch() {
 	if [ $nonroot = 1 ]; then
 		root_text="non-root"
@@ -86,6 +113,7 @@ patch() {
 		java -jar $cli_filename \
 		 -a $youtube_filename \
 		 -c \
+		 -d $device_id \
 		 -o revanced-$youtube_version-$root_text.apk \
 		 -b $patches_filename \
 		 -m $integrations_filename \
@@ -122,6 +150,12 @@ main() {
 
 	[ -z "$nonroot" ] && nonroot=1
 
+	if [ $nonroot = 0 ]; then
+		printf '%b\n' "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds"
+		sleep 5s
+	fi
+
+	checkadb
 	get_latest_version_info
 
 	cli_filename=revanced-cli-$revanced_cli_version-all.jar
