@@ -25,6 +25,29 @@ check_dep() {
 	fi
 }
 
+checkadb() {
+	if [ ! "$(pidof adb)" ]; then
+		if [ "$(command -v rdo)" ]; then
+			sudo=rdo
+		elif [ "$(command -v doas)" ]; then
+			sudo=doas
+		else
+			sudo=sudo
+		fi
+
+		printf '%b\n' "${YELLOW}starting adb server${NC}"
+		$sudo adb start-server
+	fi
+
+	device_id=$(adb devices | awk 'FNR == 2 {print $1}')
+	if [ "$device_id" = "" ]; then
+		printf '%b\n' "${RED}your phone is not connected to pc, exiting!${NC}"
+		exit 1
+	else
+		printf '%b\n' "${YELLOW}adb device_id=$device_id"
+	fi
+}
+
 get_latest_version_info() {
 	printf '%b\n' "${BLUE}getting latest versions info${NC}"
 	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
@@ -65,29 +88,6 @@ download_needed() {
 		printf '%b\n' "${CYAN}$n) ${YELLOW}downloading $i${NC}"
 		$downloader $i
 	done
-}
-
-checkadb() {
-	if [ ! "$(pidof adb)" ]; then
-		if [ "$(command -v rdo)" ]; then
-			sudo=rdo
-		elif [ "$(command -v doas)" ]; then
-			sudo=doas
-		else
-			sudo=sudo
-		fi
-
-		printf '%b\n' "${YELLOW}starting adb server${NC}"
-		$sudo adb start-server
-	fi
-
-	device_id=$(adb devices | awk 'FNR == 2 {print $1}')
-	if [ "$device_id" = "" ]; then
-		printf '%b\n' "${RED}your phone is not connected to pc, exiting!${NC}"
-		exit 1
-	else
-		printf '%b\n' "${YELLOW}adb device_id=$device_id"
-	fi
 }
 
 build_apk() {
@@ -137,7 +137,7 @@ patch() {
 
 main() {
 
-	youtube_version=17.26.35
+	[ -z "$youtube_version" ] && youtube_version=17.27.39
 	youtube_filename=YouTube-$youtube_version.apk
 	youtube_apk=https://github.com/XDream8/revanced-creator/releases/download/v0.1/$youtube_filename
 
@@ -171,6 +171,8 @@ main() {
 	fi
 
 	get_latest_version_info
+
+	printf '%b\n' "${YELLOW}youtube version to be patched: $youtube_version${NC}"
 
 	cli_filename=revanced-cli-$revanced_cli_version-all.jar
 	patches_filename=revanced-patches-$revanced_patches_version.jar
