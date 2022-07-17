@@ -90,6 +90,32 @@ checkadb() {
 	fi
 }
 
+build_apk() {
+	base_cmd="java -jar $cli_filename \
+		-a $youtube_filename \
+		-c \
+		-o revanced-$youtube_version-$root_text.apk \
+		-b $patches_filename \
+		-m $integrations_filename"
+	if [ "$1" ] && [ ! "$additional_args" = "" ]; then
+		# root with $additional_args
+		$base_cmd \
+		$additional_args \
+		$1
+	elif [ "$1" ]; then
+		# root
+		$base_cmd \
+		$1
+	elif [ ! "$1" ] && [ ! "$additional_args" = "" ]; then
+		# non-root with $additional_args
+		$base_cmd \
+		$additional_args
+	elif [ ! "$1" ] && [ "$additional_args" = "" ]; then
+		# non-root
+		$base_cmd
+	fi
+}
+
 patch() {
 	if [ $nonroot = 1 ]; then
 		root_text="non-root"
@@ -99,22 +125,13 @@ patch() {
 	printf '%b\n' "${BLUE}patching process started(${RED}$root_text${BLUE})${NC}"
 	printf '%b\n' "${BLUE}it may take a while please be patient${NC}"
 	if [ $nonroot = 1 ]; then
-		java -jar $cli_filename \
-		 -a $youtube_filename \
-		 -c \
-		 -o revanced-$youtube_version-$root_text.apk \
-		 -b $patches_filename \
-		 -m $integrations_filename
+		build_apk
 	else
-		java -jar $cli_filename \
-		 -a $youtube_filename \
-		 -c \
+		 root_args=" \
 		 -d $device_id \
-		 -o revanced-$youtube_version-$root_text.apk \
-		 -b $patches_filename \
-		 -m $integrations_filename \
 		 -e microg-support \
-		 --mount
+		 --mount"
+		 build_apk "$root_args"
 	fi
 }
 
@@ -145,6 +162,7 @@ main() {
 	fi
 
 	[ -z "$nonroot" ] && nonroot=1
+	[ -z "$additional_args" ] && additional_args=""
 
 	if [ $nonroot = 0 ]; then
 		printf '%b\n' "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds"
@@ -158,8 +176,8 @@ main() {
 	patches_filename=revanced-patches-$revanced_patches_version.jar
 	integrations_filename=app-release-unsigned.apk
 
-	remove_old
-	download_needed
+	# remove_old
+	# download_needed
 	patch
 	exit 0
 }
