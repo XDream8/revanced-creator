@@ -76,21 +76,17 @@ checkadb() {
 		else
 			sudo=sudo
 		fi
+
+		printf '%b\n' "${YELLOW}starting adb server${NC}"
+		$sudo adb start-server
 	fi
 
-	if [ $nonroot = 0 ]; then
-		if [ ! "$(pidof adb)" ]; then
-			printf '%b\n' "${YELLOW}starting adb server${NC}"
-			$sudo adb start-server
-		fi
-
-		device_id=$(adb devices | awk 'FNR == 2 {print $1}')
-		if [ "$device_id" = "" ]; then
-			printf '%b\n' "${RED}your phone is not connected to pc${NC}"
-			exit 1
-		else
-			printf '%b\n' "${YELLOW}adb device_id=$device_id"
-		fi
+	device_id=$(adb devices | awk 'FNR == 2 {print $1}')
+	if [ "$device_id" = "" ]; then
+		printf '%b\n' "${RED}your phone is not connected to pc, exiting!${NC}"
+		exit 1
+	else
+		printf '%b\n' "${YELLOW}adb device_id=$device_id"
 	fi
 }
 
@@ -153,9 +149,9 @@ main() {
 	if [ $nonroot = 0 ]; then
 		printf '%b\n' "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds"
 		sleep 5s
+		checkadb
 	fi
 
-	checkadb
 	get_latest_version_info
 
 	cli_filename=revanced-cli-$revanced_cli_version-all.jar
