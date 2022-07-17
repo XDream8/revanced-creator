@@ -36,3 +36,16 @@ jobs:
            path: |
             revanced-*-non-root.apk
             vanced-microg.apk
+
+       - name: Build non-root variant
+         run: |
+          curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/revanced-creator-music.keystore
+          export additional_args="--keystore=revanced-creator-music.keystore"
+          export what_to_patch="youtube-music"
+          sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+
+       - name: Upload Build Artifact(YouTube-Music)
+         uses: actions/upload-artifact@v3
+         with:
+           name: revanced-music
+           path: revanced-music-*-non-root.apk
