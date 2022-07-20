@@ -47,6 +47,13 @@ checkadb() {
     fi
 }
 
+checkyt() {
+    if ! adb shell cmd package list packages | grep -q 'com.google.android.youtube'; then
+      printf '%b\n' "${RED}root variant: install youtube v${apk_version} on your device to mount w/ integrations, exiting!${NC}"
+      exit 1
+    fi
+}
+
 get_latest_version_info() {
     printf '%b\n' "${BLUE}getting latest versions info${NC}"
     revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
@@ -143,6 +150,7 @@ main() {
         printf '%b\n' "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds${NC}"
         sleep 5s
         checkadb
+        checkyt
     fi
 
     ## what should we patch
