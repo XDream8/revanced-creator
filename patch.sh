@@ -48,9 +48,9 @@ checkadb() {
 }
 
 checkyt() {
-    if ! adb shell cmd package list packages | grep -q 'com.google.android.youtube'; then
-      printf '%b\n' "${RED}root variant: install youtube v${apk_version} on your device to mount w/ integrations, exiting!${NC}"
-      exit 1
+    if [ ! "$(adb shell cmd package list packages | grep -o 'com.google.android.youtube')" ]; then
+        printf '%b\n' "${RED}root variant: install youtube v${apk_version} on your device to mount w/ integrations, exiting!${NC}"
+        exit 1
     fi
 }
 
@@ -150,7 +150,6 @@ main() {
         printf '%b\n' "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds${NC}"
         sleep 5s
         checkadb
-        checkyt
     fi
 
     ## what should we patch
@@ -199,6 +198,13 @@ main() {
 
     remove_old
     download_needed
+
+    if [ $nonroot = 0 ]; then
+        printf '%b\n' "${BLUE}root variant: installing stock youtube-$apk_version first${NC}"
+        adb install -r $apk_filename || ( printf '%b\n' "${RED}install failed, exiting!${NC}" && exit 1 && exit 1 )
+        checkyt
+    fi
+
     patch
     exit 0
 }
