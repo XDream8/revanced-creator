@@ -35,7 +35,7 @@ $ ./patch.sh
 ```
 #### apk_version(YouTube: 17.26.35 and 17.27.39, YouTube-Music: 5.14.53)
 ```sh
-$ export youtube_version=17.27.39
+$ export apk_version=17.27.39
 $ ./patch.sh
 ```
 #### nonroot(defaults to 1)
@@ -53,7 +53,8 @@ $ ./patch.sh
 $ export nonroot=1
 $ export downloader="axel -n 16"
 $ export additional_args="-i enable-wide-searchbar -e hide-shorts-button"
-$ export youtube_version=17.27.39
+$ export what_to_patch="youtube"
+$ export apk_version=17.27.39
 $ ./patch.sh
 ```
 ### mentions
