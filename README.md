@@ -34,9 +34,9 @@ $ export what_to_patch="youtube-music"
 $ ./patch.sh
 ```
 #### apk_version(defaults to latest)
-**Versions Available** 
+**Versions Available** \
 YouTube: 17.26.35, 17.27.39, 17.28.34, 17.29.34 \
-YouTube-Music: 5.14.53, 5.16.51 \
+YouTube-Music: 5.14.53, 5.16.51
 ```sh
 $ export apk_version=17.27.39
 $ ./patch.sh
