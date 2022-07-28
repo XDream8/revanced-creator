@@ -103,12 +103,12 @@ build_apk() {
 		-b $patches_filename \
 		-m $integrations_filename"
     if [ "$1" ] && [ ! "$additional_args" = "" ]; then
-        # root with $additional_args
+        # with $additional_args and required arg
         $base_cmd \
             $additional_args \
             $1
     elif [ "$1" ] && [ "$additional_args" = "" ]; then
-        # root
+        # with required arg
         $base_cmd \
             $1
     elif [ ! "$1" ] && [ ! "$additional_args" = "" ]; then
@@ -124,7 +124,10 @@ build_apk() {
 patch() {
     printf '%b\n' "${BLUE}patching process started(${RED}$root_text${BLUE})${NC}"
     printf '%b\n' "${BLUE}it may take a while please be patient${NC}"
-    if [ $nonroot = 1 ]; then
+    if [ $nonroot = 1] && [ "$what_to_patch" = "reddit" ]; then
+        reddit_arg="-r"
+        build_apk "$reddit_arg"
+    elif [ $nonroot = 1 ]; then
         build_apk
     else
         root_args=" \
