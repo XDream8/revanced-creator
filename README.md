@@ -36,9 +36,9 @@ $ ./patch.sh
 #### apk_version(defaults to latest)
 **Versions Available** \
 YouTube: 17.26.35, 17.27.39, 17.28.34, 17.29.34 \
-YouTube-Music: 5.14.53, 5.16.51
-Twitter: 9.52.0
-Reddit: 2022.28.0 
+YouTube-Music: 5.14.53, 5.16.51 \
+Twitter: 9.52.0 \
+Reddit: 2022.28.0(building reddit fails atm)
 ```sh
 $ export apk_version=17.27.39
 $ ./patch.sh
