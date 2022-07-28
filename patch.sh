@@ -160,7 +160,15 @@ main() {
     elif [ "$what_to_patch" = "youtube-music" ]; then
         [ -z "$apk_version" ] && apk_version=5.16.51
         apk_filename=YouTube-Music-$apk_version.apk
-        output_apk_name=revanced-music-$apk_version-$root_text.apk
+        output_apk_name=revanced-music-$apk_version-$root_text.apk 
+    elif [ "$what_to_patch" = "twitter" ]; then
+        [ -z "$apk_version" ] && apk_version=9.52.0
+        apk_filename=Twitter-$apk_version.apk
+        output_apk_name=revanced-twitter-$apk_version-$root_text.apk
+    elif [ "$what_to_patch" = "reddit" ]; then
+        [ -z "$apk_version" ] && apk_version=2022.28.0
+        apk_filename=Reddit-$apk_version.apk
+        output_apk_name=revanced-reddit-$apk_version-$root_text.apk
     fi
 
     ## link to download $what_to_patch
