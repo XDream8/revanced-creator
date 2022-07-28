@@ -49,3 +49,25 @@ jobs:
          with:
            name: revanced-music
            path: revanced-music-*-non-root.apk
+
+       - name: Build reddit variant
+         run: |
+          export what_to_patch="reddit"
+          sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+
+       - name: Upload Build Artifact(Reddit)
+         uses: actions/upload-artifact@v3
+         with:
+           name: revanced-reddit
+           path: revanced-reddit-*-non-root.apk
+
+       - name: Build twitter variant
+         run: |
+          export what_to_patch="twitter"
+          sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+
+       - name: Upload Build Artifact(TwitterR)
+         uses: actions/upload-artifact@v3
+         with:
+           name: revanced-twitter
+           path: revanced-twitter-*-non-root.apk
