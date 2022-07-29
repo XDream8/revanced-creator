@@ -124,16 +124,15 @@ build_apk() {
 patch() {
     printf '%b\n' "${BLUE}patching process started(${RED}$root_text${BLUE})${NC}"
     printf '%b\n' "${BLUE}it may take a while please be patient${NC}"
-    if [ $nonroot = 1] && [ "$what_to_patch" = "reddit" ]; then
+    if [ $nonroot = 1 ] && [ "$what_to_patch" = "reddit" ]; then
         reddit_arg="-r"
         build_apk "$reddit_arg"
     elif [ $nonroot = 1 ]; then
         build_apk
     else
-        root_args=" \
-		 -d $device_id \
-		 -e microg-support \
-		 --mount"
+        root_args="-d $device_id \
+          -e microg-support \
+          --mount"
         build_apk "$root_args"
     fi
 }
