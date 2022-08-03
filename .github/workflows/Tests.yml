@@ -3,10 +3,10 @@ name: Tests
 on: [ push, workflow_dispatch ]
 
 jobs:
-   linux:
-     runs-on: ubuntu-latest
+  linux:
+    runs-on: ubuntu-latest
 
-     steps:
+    steps:
        - name: Install Java
          uses: actions/setup-java@v3
          with:
@@ -31,7 +31,6 @@ jobs:
          with:
            files: "revanced-*-non-root.apk"
            allow_failure: true
-
   windows:
     runs-on: windows-latest
 
