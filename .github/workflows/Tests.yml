@@ -1,6 +1,6 @@
 name: Tests
 
-on: [ push, workflow_dispatch ]
+on: [push,workflow_dispatch]
 
 jobs:
   linux:
@@ -56,9 +56,9 @@ jobs:
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
       - name: Check if revanced-youtube apk is created
-         id: check_files
-         uses: andstor/file-existence-action@v1
-         with:
+        id: check_files
+        uses: andstor/file-existence-action@v1
+        with:
            files: "revanced-*-non-root.apk"
            allow_failure: true
 
