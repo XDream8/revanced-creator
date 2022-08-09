@@ -89,7 +89,7 @@ download_needed() {
         https://github.com/revanced/revanced-patches/releases/download/v$revanced_patches_version/$patches_filename \
         https://github.com/revanced/revanced-integrations/releases/download/v$revanced_integrations_version/$integrations_filename \
         $apk_link; do
-        n=$(awk "BEGIN {print $n+1}")
+	n=$(($n+1))
         printf '%b\n' "${CYAN}$n) ${YELLOW}downloading $i${NC}"
         $downloader $i
     done
@@ -162,9 +162,9 @@ main() {
     elif [ "$what_to_patch" = "youtube-music" ]; then
         [ -z "$apk_version" ] && apk_version=5.16.51
         apk_filename=YouTube-Music-$apk_version.apk
-        output_apk_name=revanced-music-$apk_version-$root_text.apk 
+        output_apk_name=revanced-music-$apk_version-$root_text.apk
     elif [ "$what_to_patch" = "twitter" ]; then
-        [ -z "$apk_version" ] && apk_version=9.52.0
+        [ -z "$apk_version" ] && apk_version=9.53.0
         apk_filename=Twitter-$apk_version.apk
         output_apk_name=revanced-twitter-$apk_version-$root_text.apk
     elif [ "$what_to_patch" = "reddit" ]; then

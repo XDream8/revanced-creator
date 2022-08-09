@@ -3,6 +3,7 @@ this script first downloads the latest [revanced-cli](https://github.com/revance
 Now we even support patching YouTube-Music, Reddit and Twitter \
 **Check out [github actions](https://github.com/XDream8/revanced-creator/actions) (they are all built using this script. also non-root variant there includes vanced-microg.apk inside it)**
 ## deps
+- sh(dash or bash)
 - curl(curl is required to get latest versions of revanced-*)
 - awk
 - java(17)
@@ -36,7 +37,7 @@ $ ./patch.sh
 **Versions Available** \
 YouTube: 17.26.35, 17.27.39, 17.28.34, 17.29.34 \
 YouTube-Music: 5.14.53, 5.16.51 \
-Twitter: 9.52.0 \
+Twitter: 9.52.0, 9.53.0 \
 Reddit: 2022.28.0
 ```sh
 $ export apk_version=17.27.39
