@@ -127,6 +127,9 @@ patch() {
 	if [ $nonroot = 1 ] && [ "$what_to_patch" = "reddit" ]; then
 		reddit_arg="-r"
 		build_apk "$reddit_arg"
+	elif [ $nonroot = 1 ] && [ "$what_to_patch" = "tiktok" ]; then
+		tiktok_arg="-r"
+		build_apk "$tiktok_arg"
 	elif [ $nonroot = 1 ]; then
 		build_apk
 	else
@@ -171,6 +174,10 @@ main() {
 		[ -z "$apk_version" ] && apk_version=2022.28.0
 		apk_filename=Reddit-$apk_version.apk
 		output_apk_name=revanced-reddit-$apk_version-$root_text.apk
+	elif [ "$what_to_patch" = "tiktok" ]; then
+		[ -z "$apk_version" ] && apk_version=25.8.2
+		apk_filename=TikTok-$apk_version.apk
+		output_apk_name=revanced-tiktok-$apk_version-$root_text.apk
 	elif [ "$what_to_patch" = "custom" ]; then
 		if [ -z "$apk_filename" ] && [ "$(command -v find)" ]; then
 			apk_filename=$(find . -maxdepth 1 -type f \( -name "*.apk" \) ! \( -name "app-release-unsigned.apk" -or -name "revanced-*.apk" \) | sort -R | head -n 1 | sed 's/.\///')

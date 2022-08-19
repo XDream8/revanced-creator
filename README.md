@@ -50,7 +50,8 @@ $ ./patch.sh
 YouTube: 17.26.35, 17.27.39, 17.28.34, 17.29.34, 17.32.35 \
 YouTube-Music: 5.14.53, 5.16.51, 5.17.51 \
 Twitter: 9.52.0, 9.53.0 \
-Reddit: 2022.28.0
+Reddit: 2022.28.0 \
+TikTok: 25.8.2
 ```sh
 $ export apk_version=17.27.39
 $ ./patch.sh
