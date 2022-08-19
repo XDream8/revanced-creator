@@ -22,6 +22,17 @@ $ cd revanced-creator
 $ ./patch.sh
 ```
 ### options
+#### using custom apk
+here is how to patch user downloaded reddit apk \
+(!)if apk_filename is not set, script uses find to select an apk from the directory you are in randomly(if there is only one apk in directory it is fine) \
+(!)additional arg is only for reddit, other apps does not need it
+```sh
+$ export what_to_patch="custom"
+$ export apk_filename=reddit.apk
+$ export output_apk_name=revanced-reddit.apk
+$ export additional_args="-r"
+$ ./patch.sh
+```
 #### additional_args
 we include `enable-wide-searchbar` and `swipe-controls` patch and exclude `hide-shorts-button` here
 ```sh
