@@ -73,3 +73,14 @@ jobs:
          with:
            name: revanced-twitter
            path: revanced-twitter-*-non-root.apk
+
+       - name: Build tiktok variant
+         run: |
+          export what_to_patch="tiktok"
+          sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+
+       - name: Upload Build Artifact(TikTok)
+         uses: actions/upload-artifact@v3
+         with:
+           name: revanced-tiktok
+           path: revanced-tiktok-*-non-root.apk
