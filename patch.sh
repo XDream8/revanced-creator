@@ -58,13 +58,14 @@ get_latest_version_info() {
 	printf '%b\n' "${BLUE}getting latest versions info${NC}"
 	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
 	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
-	revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | grep -o 'revanced/revanced-integrations/releases/download/v[0-9].*/.*.apk' | grep -o "[0-9].*" | cut -d"/" -f1)
-	for i in \
-		"revanced_cli_version : $revanced_cli_version" \
-		"revanced_patches_version : $revanced_patches_version" \
-		"revanced_integrations_version : $revanced_integrations_version"; do
-		printf '%b\n' "${YELLOW}$i${NC}"
-	done
+	# integrations
+	if [ "$what_to_patch" = "youtube" ]; then
+		revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | grep -o 'revanced/revanced-integrations/releases/download/v[0-9].*/.*.apk' | grep -o "[0-9].*" | cut -d"/" -f1)
+	fi
+	# give info
+	printf '%b\n' "${YELLOW}revanced_cli_version : $revanced_cli_version${NC}"
+	printf '%b\n' "${YELLOW}revanced_patches_version : $revanced_patches_version${NC}"
+	[ "$revanced_integrations_version" ] && printf '%b\n' "${YELLOW}revanced_integrations_version : $revanced_integrations_version${NC}"
 }
 
 remove_old() {
