@@ -60,21 +60,15 @@ get_latest_version_info() {
 	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
 	revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | grep -o 'revanced/revanced-integrations/releases/download/v[0-9].*/.*.apk' | grep -o "[0-9].*" | cut -d"/" -f1)
 	for i in \
-		"revanced_cli_version=$revanced_cli_version" \
-		"revanced_patches_version=$revanced_patches_version" \
-		"revanced_integrations_version=$revanced_integrations_version"; do
+		"revanced_cli_version : $revanced_cli_version" \
+		"revanced_patches_version : $revanced_patches_version" \
+		"revanced_integrations_version : $revanced_integrations_version"; do
 		printf '%b\n' "${YELLOW}$i${NC}"
 	done
 }
 
 remove_old() {
-	if [ ! "$(command -v find)" ]; then
-		[ ! -f "$cli_filename" ] && [ -f "revanced-cli-*-all.jar" ] && (printf '%b\n' "${RED}removing old revanced-cli${NC}" && rm -f revanced-cli-*.jar)
-		[ ! -f "$patches_filename" ] && [ -f "revanced-patches-*-all.jar" ] && (printf '%b\n' "${RED}removing old revanced-patches${NC}" && rm -f revanced-patches-*.jar)
-		[ ! -f "$apk_filename" ] && [ -f "YouTube-*.apk" ] && (printf '%b\n' "${RED}removing old youtube${NC}" && rm YouTube-17*.apk)
-		[ ! -f "$apk_filename" ] && [ -f "YouTube-Music-*.apk" ] && (printf '%b\n' "${RED}removing old youtube-music${NC}" && rm YouTube-Music-*.apk)
-		rm -f $integrations_filename
-	else
+	if [ "$(command -v find)" ]; then
 		find . -maxdepth 1 -type f \( -name "revanced-*.jar" -or -name "$integrations_filename" \) ! \( -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$apk_filename" \) -delete
 	fi
 }
@@ -83,11 +77,11 @@ download_needed() {
 	# number
 	n=0
 
-	printf '%b\n' "${BLUE}Downloading revanced-cli, revanced-patches and revanced-integrations${NC}"
+	printf '%b\n' "${BLUE}Downloading needed files${NC}"
 	for i in \
-		https://github.com/revanced/revanced-cli/releases/download/v$revanced_cli_version/$cli_filename \
-		https://github.com/revanced/revanced-patches/releases/download/v$revanced_patches_version/$patches_filename \
-		https://github.com/revanced/revanced-integrations/releases/download/v$revanced_integrations_version/$integrations_filename \
+		$cli_link \
+		$patches_link \
+		$integrations_link \
 		$apk_link; do
 		n=$(($n + 1))
 		printf '%b\n' "${CYAN}$n) ${YELLOW}downloading $i${NC}"
@@ -236,13 +230,19 @@ main() {
 	get_latest_version_info
 
 	if [ ! "$what_to_patch" = "custom" ]; then
-		printf '%b\n' "${YELLOW}$what_to_patch version to be patched: $apk_version${NC}"
+		printf '%b\n' "${YELLOW}$what_to_patch version to be patched : $apk_version${NC}"
 	else
-		printf '%b\n' "${YELLOW}custom apk: $apk_filename${NC}"
+		printf '%b\n' "${YELLOW}custom apk : $apk_filename${NC}"
 	fi
+
+	##
 	cli_filename=revanced-cli-$revanced_cli_version-all.jar
 	patches_filename=revanced-patches-$revanced_patches_version.jar
 	integrations_filename=app-release-unsigned.apk
+
+	[ ! -f "$cli_filename" ] && cli_link=https://github.com/revanced/revanced-cli/releases/download/v$revanced_cli_version/$cli_filename
+	[ ! -f "$patches_filename" ] && patches_link=https://github.com/revanced/revanced-patches/releases/download/v$revanced_patches_version/$patches_filename
+	[ ! -f "$integrations_filename" ] && integrations_link=https://github.com/revanced/revanced-integrations/releases/download/v$revanced_integrations_version/$integrations_filename
 
 	remove_old
 	download_needed
