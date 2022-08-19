@@ -100,8 +100,7 @@ build_apk() {
 		-a $apk_filename \
 		-c \
 		-o $output_apk_name \
-		-b $patches_filename \
-		-m $integrations_filename"
+		-b $patches_filename"
 	if [ "$1" ] && [ ! "$additional_args" = "" ]; then
 		# with $additional_args and required arg
 		$base_cmd \
@@ -124,7 +123,10 @@ build_apk() {
 patch() {
 	printf '%b\n' "${BLUE}patching process started(${RED}$root_text${BLUE})${NC}"
 	printf '%b\n' "${BLUE}it may take a while please be patient${NC}"
-	if [ $nonroot = 1 ] && [ "$what_to_patch" = "reddit" ]; then
+	if [ $nonroot = 1 ] && [ "$what_to_patch" = "youtube" ]; then
+		youtube_arg="-m $integrations_filename"
+		build_apk "$youtube_arg"
+	elif [ $nonroot = 1 ] && [ "$what_to_patch" = "reddit" ]; then
 		reddit_arg="-r"
 		build_apk "$reddit_arg"
 	elif [ $nonroot = 1 ] && [ "$what_to_patch" = "tiktok" ]; then
