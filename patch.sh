@@ -187,7 +187,7 @@ main() {
 			printf '%b\n' "${RED}apk file does not exist, please specify an existing apk file using 'apk_filename' arg${NC}"
 			exit 1
 		fi
-		[ -z "$output_apk_name" ] && output_apk_name=revanced-$apk_filename.apk
+		[ -z "$output_apk_name" ] && output_apk_name=revanced-$apk_filename
 	fi
 
 	## link to download $what_to_patch
