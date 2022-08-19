@@ -24,8 +24,9 @@ $ ./patch.sh
 ### options
 #### using custom apk
 here is how to patch user downloaded reddit apk \
-(!)if apk_filename is not set, script uses find to select an apk from the directory you are in randomly(if there is only one apk in directory it is fine) \
-(!)additional arg is only for reddit, other apps does not need it
+(!) if apk_filename is not set, script uses find to select an apk from the directory you are in randomly(if there is only one apk in the directory you are in it is fine) \
+(!) additional arg is only for reddit, other apps does not need it \
+(?) output_apk_name is optional
 ```sh
 $ export what_to_patch="custom"
 $ export apk_filename=reddit.apk
