@@ -134,6 +134,12 @@ patch() {
 		build_apk "$tiktok_arg"
 	elif [ $nonroot = 1 ]; then
 		build_apk
+	elif [ $nonroot = 0 ] && [ "$what_to_patch" = "youtube" ]; then
+		root_args="-d $device_id \
+			    -m $integrations_filename \
+          -e microg-support \
+          --mount"
+		build_apk "$root_args"
 	else
 		root_args="-d $device_id \
           -e microg-support \
