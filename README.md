@@ -23,9 +23,9 @@ $ ./patch.sh
 ```
 ### options
 #### additional_args
-we include `enable-wide-searchbar` patch and exclude `hide-shorts-button` here
+we include `enable-wide-searchbar` and `swipe-controls` patch and exclude `hide-shorts-button` here
 ```sh
-$ export additional_args="-i enable-wide-searchbar -e hide-shorts-button"
+$ export additional_args="-i enable-wide-searchbar -i swipe-controls -e hide-shorts-button"
 $ ./patch.sh
 ```
 #### what_to_patch(youtube, youtube-music, reddit or twitter)
@@ -57,7 +57,7 @@ $ ./patch.sh
 ```sh
 $ export nonroot=1
 $ export downloader="axel -n 16"
-$ export additional_args="-i enable-wide-searchbar -e hide-shorts-button"
+$ export additional_args="-i enable-wide-searchbar -i swipe-controls -e hide-shorts-button"
 $ export what_to_patch="youtube"
 $ export apk_version=17.27.39
 $ ./patch.sh
