@@ -99,7 +99,7 @@ build_apk() {
 	base_cmd="java -jar $cli_filename \
 		-a $apk_filename \
 		-c \
-		-o $output_apk_name \
+		-o $output_apk \
 		-b $patches_filename"
 	if [ "$1" ] && [ ! "$additional_args" = "" ]; then
 		# with $additional_args and required arg
@@ -169,23 +169,23 @@ main() {
 	if [ "$what_to_patch" = "youtube" ]; then
 		[ -z "$apk_version" ] && apk_version=17.32.35
 		apk_filename=YouTube-$apk_version.apk
-		output_apk_name=revanced-$apk_version-$root_text.apk
+		[ -z "$output_apk" ] && output_apk=revanced-$apk_version-$root_text.apk
 	elif [ "$what_to_patch" = "youtube-music" ]; then
 		[ -z "$apk_version" ] && apk_version=5.17.51
 		apk_filename=YouTube-Music-$apk_version.apk
-		output_apk_name=revanced-music-$apk_version-$root_text.apk
+		[ -z "$output_apk" ] && output_apk=revanced-music-$apk_version-$root_text.apk
 	elif [ "$what_to_patch" = "twitter" ]; then
 		[ -z "$apk_version" ] && apk_version=9.53.0
 		apk_filename=Twitter-$apk_version.apk
-		output_apk_name=revanced-twitter-$apk_version-$root_text.apk
+		[ -z "$output_apk" ] && output_apk=revanced-twitter-$apk_version-$root_text.apk
 	elif [ "$what_to_patch" = "reddit" ]; then
 		[ -z "$apk_version" ] && apk_version=2022.28.0
 		apk_filename=Reddit-$apk_version.apk
-		output_apk_name=revanced-reddit-$apk_version-$root_text.apk
+		[ -z "$output_apk" ] && output_apk=revanced-reddit-$apk_version-$root_text.apk
 	elif [ "$what_to_patch" = "tiktok" ]; then
 		[ -z "$apk_version" ] && apk_version=25.8.2
 		apk_filename=TikTok-$apk_version.apk
-		output_apk_name=revanced-tiktok-$apk_version-$root_text.apk
+		[ -z "$output_apk" ] && output_apk=revanced-tiktok-$apk_version-$root_text.apk
 	elif [ "$what_to_patch" = "custom" ]; then
 		if [ -z "$apk_filename" ] && [ "$(command -v find)" ]; then
 			apk_filename=$(find . -maxdepth 1 -type f \( -name "*.apk" \) ! \( -name "app-release-unsigned.apk" -or -name "revanced-*.apk" \) | sort -R | head -n 1 | sed 's/.\///')
@@ -202,7 +202,7 @@ main() {
 			printf '%b\n' "${RED}apk file does not exist, please specify an existing apk file using 'apk_filename' arg${NC}"
 			exit 1
 		fi
-		[ -z "$output_apk_name" ] && output_apk_name=revanced-$apk_filename
+		[ -z "$output_apk" ] && output_apk=revanced-$apk_filename
 	fi
 
 	## link to download $what_to_patch

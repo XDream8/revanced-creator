@@ -34,7 +34,7 @@ here is how to patch user downloaded reddit apk \
 ```sh
 $ export what_to_patch="custom"
 $ export apk_filename=reddit.apk
-$ export output_apk_name=revanced-reddit.apk
+$ export output_apk=revanced-reddit.apk
 $ export additional_args="-r"
 $ ./patch.sh
 ```
@@ -47,6 +47,12 @@ $ ./patch.sh
 #### what_to_patch(youtube, youtube-music, reddit or twitter)
 ```sh
 $ export what_to_patch="youtube-music"
+$ ./patch.sh
+```
+#### output_apk
+you can set output apk name with this
+```
+$ export output_apk="ReReddit.apk"
 $ ./patch.sh
 ```
 #### apk_version(defaults to latest)
@@ -72,7 +78,7 @@ $ ./patch.sh
 ```
 #### or you can use all these options together
 ```sh
-$ export nonroot=1
+$ export root=0
 $ export downloader="axel -n 16"
 $ export additional_args="-i enable-wide-searchbar -i swipe-controls -e hide-shorts-button"
 $ export what_to_patch="youtube"
