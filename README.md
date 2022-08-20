@@ -1,6 +1,10 @@
 # revanced-creator [![CI](https://github.com/XDream8/revanced-creator/actions/workflows/Build.yml/badge.svg)](https://github.com/XDream8/revanced-creator/actions/workflows/Build.yml)
-this script first downloads the latest [revanced-cli](https://github.com/revanced/revanced-cli), [revanced-patches](https://github.com/revanced/revanced-patches) and [revanced-integrations](https://github.com/revanced/revanced-integrations). then it downloads the latest supported youtube version and patches it according to [revanced-documentation](https://github.com/revanced/revanced-documentation) \
-Now we even support patching YouTube-Music, Reddit and Twitter \
+**What does this do?**
+
+1. downloading the latest [revanced-cli](https://github.com/revanced/revanced-cli), [revanced-patches](https://github.com/revanced/revanced-patches) and [revanced-integrations](https://github.com/revanced/revanced-integrations).
+2. downloading the latest supported youtube(yt-music, reddit, twitter, tiktok) version
+3. creating revanced app according to [revanced-documentation](https://github.com/revanced/revanced-documentation)
+
 **Check out [github actions](https://github.com/XDream8/revanced-creator/actions) (they are all built using this script. also non-root variant there includes vanced-microg.apk inside it)**
 ## deps
 - sh(dash or bash)
