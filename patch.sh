@@ -118,18 +118,18 @@ build_apk() {
 patch() {
 	printf '%b\n' "${BLUE}patching process started(${RED}$root_text${BLUE})${NC}"
 	printf '%b\n' "${BLUE}it may take a while please be patient${NC}"
-	if [ $nonroot = 1 ] && [ "$what_to_patch" = "youtube" ]; then
+	if [ $root = 0 ] && [ "$what_to_patch" = "youtube" ]; then
 		youtube_arg="-m $integrations_filename"
 		build_apk "$youtube_arg"
-	elif [ $nonroot = 1 ] && [ "$what_to_patch" = "reddit" ]; then
+	elif [ $root = 0 ] && [ "$what_to_patch" = "reddit" ]; then
 		reddit_arg="-r"
 		build_apk "$reddit_arg"
-	elif [ $nonroot = 1 ] && [ "$what_to_patch" = "tiktok" ]; then
+	elif [ $root = 0 ] && [ "$what_to_patch" = "tiktok" ]; then
 		tiktok_arg="-r"
 		build_apk "$tiktok_arg"
-	elif [ $nonroot = 1 ]; then
+	elif [ $root = 0 ]; then
 		build_apk
-	elif [ $nonroot = 0 ] && [ "$what_to_patch" = "youtube" ]; then
+	elif [ $root = 1 ] && [ "$what_to_patch" = "youtube" ]; then
 		root_args="-d $device_id \
 			    -m $integrations_filename \
           -e microg-support \
@@ -151,7 +151,7 @@ main() {
 	[ -z "$additional_args" ] && additional_args=""
 
 	## check $nonroot
-	if [ $nonroot = 1 ]; then
+	if [ $root = 0 ]; then
 		root_text="non-root"
 	else
 		root_text="root"
@@ -251,7 +251,7 @@ main() {
 
 	download_needed
 
-	if [ $nonroot = 0 ]; then
+	if [ $root = 1 ]; then
 		printf '%b\n' "${BLUE}root variant: installing stock youtube-$apk_version first${NC}"
 		adb install -r $apk_filename || (printf '%b\n' "${RED}install failed, exiting!${NC}" && exit 1 && exit 1)
 		checkyt

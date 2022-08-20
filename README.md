@@ -60,9 +60,9 @@ TikTok: 25.8.2
 $ export apk_version=17.27.39
 $ ./patch.sh
 ```
-#### nonroot(defaults to 1)
+#### root(defaults to 0)
 ```sh
-$ export nonroot=1
+$ export root=0
 $ ./patch.sh
 ```
 #### downloader
