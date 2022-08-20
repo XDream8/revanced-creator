@@ -147,10 +147,10 @@ main() {
 
 	## defaults
 	[ -z "$what_to_patch" ] && what_to_patch="youtube"
-	[ -z "$nonroot" ] && nonroot=1
+	[ -z "$root" ] && root=0
 	[ -z "$additional_args" ] && additional_args=""
 
-	## check $nonroot
+	## check $root
 	if [ $root = 0 ]; then
 		root_text="non-root"
 	else
