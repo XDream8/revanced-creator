@@ -61,11 +61,11 @@ checkyt() {
 
 get_latest_version_info() {
 	printf '%b\n' "${BLUE}getting latest versions info${NC}"
-	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
-	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | head -n 1 | cut -d"/" -f1)
+	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
+	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
 	# integrations
 	if [ "$what_to_patch" = "youtube" ]; then
-		revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | grep -o 'revanced/revanced-integrations/releases/download/v[0-9].*/.*.apk' | grep -o "[0-9].*" | cut -d"/" -f1)
+		revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | awk 'match($0, /([0-9][.]+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
 	fi
 	# give info
 	printf '%b\n' "${YELLOW}revanced_cli_version : $revanced_cli_version${NC}"
@@ -165,30 +165,27 @@ main() {
 		checkadb
 	fi
 
+	[ -z "$apk_version" ] && apk_version=$(curl -s -L "https://github.com/XDream8/revanced-creator/releases/latest" | awk 'match($0, /[A-z]([0-9][.]+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' '{print $2}' | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | sort | awk 'END{print}')
+
 	## what should we patch
 	if [ "$what_to_patch" = "youtube" ]; then
-		[ -z "$apk_version" ] && apk_version=17.32.35
 		apk_filename=YouTube-$apk_version.apk
 		[ -z "$output_apk" ] && output_apk=revanced-$apk_version-$root_text.apk
 	elif [ "$what_to_patch" = "youtube-music" ]; then
-		[ -z "$apk_version" ] && apk_version=5.17.51
 		apk_filename=YouTube-Music-$apk_version.apk
 		[ -z "$output_apk" ] && output_apk=revanced-music-$apk_version-$root_text.apk
 	elif [ "$what_to_patch" = "twitter" ]; then
-		[ -z "$apk_version" ] && apk_version=9.53.0
 		apk_filename=Twitter-$apk_version.apk
 		[ -z "$output_apk" ] && output_apk=revanced-twitter-$apk_version-$root_text.apk
 	elif [ "$what_to_patch" = "reddit" ]; then
-		[ -z "$apk_version" ] && apk_version=2022.28.0
 		apk_filename=Reddit-$apk_version.apk
 		[ -z "$output_apk" ] && output_apk=revanced-reddit-$apk_version-$root_text.apk
 	elif [ "$what_to_patch" = "tiktok" ]; then
-		[ -z "$apk_version" ] && apk_version=25.8.2
 		apk_filename=TikTok-$apk_version.apk
 		[ -z "$output_apk" ] && output_apk=revanced-tiktok-$apk_version-$root_text.apk
 	elif [ "$what_to_patch" = "custom" ]; then
 		if [ -z "$apk_filename" ] && [ "$(command -v find)" ]; then
-			apk_filename=$(find . -maxdepth 1 -type f \( -name "*.apk" \) ! \( -name "app-release-unsigned.apk" -or -name "revanced-*.apk" \) | sort -R | head -n 1 | sed 's/.\///')
+			apk_filename=$(find . -maxdepth 1 -type f \( -name "*.apk" \) ! \( -name "app-release-unsigned.apk" -or -name "revanced-*.apk" \) | sort -R | awk -F'/' 'NR==1 {print $2}')
 		elif [ -z "$apk_filename" ] && [ ! "$(command -v find)" ]; then
 			printf '%b\n' "${RED}please specify an apk file using 'apk_filename' arg${NC}"
 			exit 1
@@ -207,7 +204,7 @@ main() {
 
 	## link to download $what_to_patch
 	if [ ! "$what_to_patch" = "custom" ]; then
-		apk_link=https://github.com/XDream8/revanced-creator/releases/download/v0.1/$apk_filename
+		[ ! -f "$apk_filename" ] && apk_link=https://github.com/XDream8/revanced-creator/releases/download/v0.1/$apk_filename
 	fi
 
 	## downloader
