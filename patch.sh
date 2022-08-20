@@ -30,8 +30,10 @@ checkadb() {
 			sudo=rdo
 		elif [ "$(command -v doas)" ]; then
 			sudo=doas
-		else
+		elif [ "$(command -v sudo)" ]; then
 			sudo=sudo
+		else
+			sudo=
 		fi
 
 		printf '%b\n' "${YELLOW}starting adb server${NC}"
