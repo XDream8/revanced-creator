@@ -37,7 +37,10 @@ checkadb() {
 		fi
 
 		printf '%b\n' "${YELLOW}starting adb server${NC}"
-		$sudo adb start-server
+		$sudo adb start-server || {
+			printf '%b\n' "${RED}starting adb server failed, exiting!${NC}"
+			exit 1
+		}
 	fi
 
 	device_id=$(adb devices | awk 'FNR == 2 {print $1}')
@@ -255,7 +258,10 @@ main() {
 
 	if [ $root = 1 ]; then
 		printf '%b\n' "${BLUE}root variant: installing stock youtube-$apk_version first${NC}"
-		adb install -r $apk_filename || (printf '%b\n' "${RED}install failed, exiting!${NC}" && exit 1 && exit 1)
+		adb install -r $apk_filename || {
+			printf '%b\n' "${RED}install failed, exiting!${NC}"
+			exit 1
+		}
 		checkyt
 	fi
 
