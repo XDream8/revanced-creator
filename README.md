@@ -1,4 +1,14 @@
-# revanced-creator [![CI](https://github.com/XDream8/revanced-creator/actions/workflows/Build.yml/badge.svg)](https://github.com/XDream8/revanced-creator/actions/workflows/Build.yml)
+# revanced-creator
+
+<p align="center">
+  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/XDream8/revanced-creator/Tests?color=red&style=flat-square">
+  <img alt="GitHub" src="https://img.shields.io/github/license/XDream8/revanced-creator?color=blue&style=flat-square">
+  <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/XDream8/revanced-creator?color=red&style=flat-square">
+  <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/XDream8/revanced-creator?color=red&style=flat-square">
+  <img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/XDream8/revanced-creator?style=flat-square">
+  <img alt="GitHub forks" src="https://img.shields.io/github/forks/XDream8/revanced-creator?style=flat-square">
+</p>
+
 **What does this do?**
 
 1. downloading the latest [revanced-cli](https://github.com/revanced/revanced-cli), [revanced-patches](https://github.com/revanced/revanced-patches) and [revanced-integrations](https://github.com/revanced/revanced-integrations).
