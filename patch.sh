@@ -89,7 +89,7 @@ download_needed() {
 		$patches_link \
 		$integrations_link \
 		$apk_link; do
-		n=$(($n + 1))
+		n=$((n + 1))
 		printf '%b\n' "${CYAN}$n) ${YELLOW}downloading $i${NC}"
 		$downloader $i
 	done
