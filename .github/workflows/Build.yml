@@ -28,8 +28,8 @@ jobs:
 
        - name: Build youtube variant
          run: |
-          curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator.keystore
-          export additional_args="--keystore=revanced-creator.keystore"
+          # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator.keystore
+          # export additional_args="--keystore=revanced-creator.keystore"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
           curl -OL https://github.com/XDream8/revanced-creator/releases/download/youtube/vanced-microg.apk
 
@@ -43,8 +43,8 @@ jobs:
 
        - name: Build youtube-music variant
          run: |
-          curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-music.keystore
-          export additional_args="--keystore=revanced-creator-music.keystore"
+          # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-music.keystore
+          # export additional_args="--keystore=revanced-creator-music.keystore"
           export what_to_patch="youtube-music"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
@@ -56,8 +56,8 @@ jobs:
 
        - name: Build reddit variant
          run: |
-          curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-reddit.keystore
-          export additional_args="--keystore=revanced-creator-reddit.keystore"
+          # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-reddit.keystore
+          # export additional_args="--keystore=revanced-creator-reddit.keystore"
           export what_to_patch="reddit"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
@@ -69,8 +69,8 @@ jobs:
 
        - name: Build twitter variant
          run: |
-          curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-twitter.keystore
-          export additional_args="--keystore=revanced-creator-twitter.keystore"
+          # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-twitter.keystore
+          # export additional_args="--keystore=revanced-creator-twitter.keystore"
           export what_to_patch="twitter"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 

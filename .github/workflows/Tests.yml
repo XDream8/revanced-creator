@@ -25,8 +25,8 @@ jobs:
 
        - name: Test by building youtube-revanced on Ubuntu
          run: |
-          curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/revanced-creator.keystore
-          export additional_args="--keystore=revanced-creator.keystore"
+          # curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/revanced-creator.keystore
+          # export additional_args="--keystore=revanced-creator.keystore"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
        - name: Check if revanced-youtube apk is created
@@ -55,8 +55,8 @@ jobs:
 
       - name: Test by building youtube-revanced on WSL
         run: |
-          curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/revanced-creator.keystore
-          export additional_args="--keystore=revanced-creator.keystore"
+          # curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/revanced-creator.keystore
+          # export additional_args="--keystore=revanced-creator.keystore"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
       - name: Check if revanced-youtube apk is created
@@ -65,4 +65,3 @@ jobs:
         with:
            files: "revanced-*-non-root.apk"
            allow_failure: true
-
