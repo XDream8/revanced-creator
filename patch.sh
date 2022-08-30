@@ -204,7 +204,7 @@ main() {
 
 	## link to download $what_to_patch
 	if [ ! "$what_to_patch" = "custom" ]; then
-		[ ! -f "$apk_filename" ] && apk_link=https://github.com/XDream8/revanced-creator/releases/download/v0.1/$apk_filename
+		[ ! -f "$apk_filename" ] && apk_link=https://github.com/XDream8/revanced-creator/releases/download/$what_to_patch/$apk_filename
 	fi
 
 	## downloader
