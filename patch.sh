@@ -164,8 +164,10 @@ main() {
 		sleep 5s
 		checkadb
 	fi
-
-	[ -z "$apk_version" ] && apk_version=$(curl -s -L "https://github.com/XDream8/revanced-creator/releases/tag/$what_to_patch" | awk 'match($0, /[A-z]([0-9].+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | sort | awk 'END{print}')
+	
+	if [ ! "$what_to_patch" = "custom" ]; then
+		[ -z "$apk_version" ] && apk_version=$(curl -s -L "https://github.com/XDream8/revanced-creator/releases/tag/$what_to_patch" | awk 'match($0, /[A-z]([0-9].+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | sort | awk 'END{print}')
+	fi
 
 	## what should we patch
 	if [ "$what_to_patch" = "youtube" ]; then
