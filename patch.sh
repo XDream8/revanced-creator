@@ -165,7 +165,7 @@ main() {
 		checkadb
 	fi
 
-	[ -z "$apk_version" ] && apk_version=$(curl -s -L "https://github.com/XDream8/revanced-creator/releases/latest" | awk 'match($0, /[A-z]([0-9][.]+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' '{print $2}' | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | sort | awk 'END{print}')
+	[ -z "$apk_version" ] && apk_version=$(curl -s -L "https://github.com/XDream8/revanced-creator/releases/tag/$what_to_patch" | awk 'match($0, /[A-z]([0-9].+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | sort | awk 'END{print}')
 
 	## what should we patch
 	if [ "$what_to_patch" = "youtube" ]; then
