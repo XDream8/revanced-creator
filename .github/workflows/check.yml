@@ -25,3 +25,14 @@ jobs:
           git config --global user.email 'Revanced-Creator@users.noreply.github.com'
           git commit -am "New patches released, starting CI"
           git push
+
+  del_runs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ secrets.REPO_SCOPED_TOKEN }}
+          repository: ${{ github.repository  }}
+          retain_days: 30
+          keep_minimum_runs: 6
