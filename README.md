@@ -15,7 +15,8 @@
 2. downloading the latest supported youtube(yt-music, reddit, twitter, tiktok) version
 3. creating revanced app according to [revanced-documentation](https://github.com/revanced/revanced-documentation)
 
-**Check out [github actions](https://github.com/XDream8/revanced-creator/actions) (they are all built using this script. also non-root variant there includes vanced-microg.apk inside it)**. Download the latest CI builds [here](https://nightly.link/XDream8/revanced-creator/workflows/Build/main).
+**Check out [github action artifacts](https://github.com/XDream8/revanced-creator/actions) for revanced apks built with this script**. \
+Download the latest CI builds [here](https://nightly.link/XDream8/revanced-creator/workflows/Build/main).
 
 ## deps
 - sh(dash or bash)
