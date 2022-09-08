@@ -19,7 +19,7 @@ NC='\033[0m'
 
 out() {
 	# print a message
-	printf '%b\n' "$@${NC}"
+	printf '%b\n' "$*${NC}"
 }
 
 notset() {
@@ -68,6 +68,7 @@ checkadb() {
 }
 
 checkyt() {
+	# shellcheck disable=2143
 	if [ ! "$(adb shell cmd package list packages | grep -o 'com.google.android.youtube')" ]; then
 		out "${RED}root variant: install youtube v${apk_version} on your device to mount w/ integrations, exiting!"
 		exit 1
@@ -107,7 +108,7 @@ download_needed() {
 		$apk_link; do
 		n=$((n + 1))
 		out "${CYAN}$n) ${YELLOW}downloading $i"
-		$downloader $i
+		$downloader "$i"
 	done
 }
 
@@ -119,10 +120,11 @@ patch() {
 		-c \
 		-o $output_apk \
 		-b $patches_filename"
+	# shellcheck disable=2086
 	if ! notset "additional_args"; then
 		# with $additional_args
 		$base_cmd \
-		$additional_args
+			$additional_args
 	elif notset "$additional_args"; then
 		# without $additional_args
 		$base_cmd
@@ -131,9 +133,9 @@ patch() {
 
 addarg() {
 	if notset "$additional_args"; then
-		additional_args="$@"
+		additional_args="$*"
 	else
-		additional_args="$additional_args $@"
+		additional_args="$additional_args $*"
 	fi
 }
 
@@ -170,7 +172,9 @@ main() {
 	fi
 
 	## check $root
-	equals "$root" "0" && root_text="non-root" || {
+	if equals "$root" "0"; then
+		root_text="non-root"
+	else
 		root_text="root"
 		out "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds"
 		sleep 5s
@@ -178,7 +182,7 @@ main() {
 		addarg "-d $device_id \
           -e microg-support \
           --mount"
-	}
+	fi
 
 	## getting versions information
 	get_latest_version_info
@@ -190,25 +194,25 @@ main() {
 
 	## what should we patch
 	case "$what_to_patch" in
-	*youtube*)
+	youtube)
 		apk_filename=YouTube-$apk_version.apk
 		addarg "-m $integrations_filename"
 		;;
-	*youtube-music*)
+	youtube-music)
 		apk_filename=YouTube-Music-$apk_version.apk
 		;;
-	*twitter*)
+	twitter)
 		apk_filename=Twitter-$apk_version.apk
 		;;
-	*reddit*)
+	reddit)
 		apk_filename=Reddit-$apk_version.apk
 		addarg "-r"
 		;;
-	*tiktok*)
+	tiktok)
 		apk_filename=TikTok-$apk_version.apk
 		addarg "-r"
 		;;
-	*custom*)
+	custom)
 		if notset "$apk_filename" && check_dep "find"; then
 			apk_filename=$(find . -maxdepth 1 -type f -iname "*.apk" -not -iname "app-release-unsigned.apk" -or -not -iname "revanced-*.apk" -or -not -iname "*.keystore" | sort -r | awk -F'/' 'NR==1 {print $2}')
 		elif [ -z "$apk_filename" ] && ! check_dep "find"; then
@@ -252,7 +256,7 @@ main() {
 
 	equals "$root" "1" && {
 		out "${BLUE}root variant: installing stock youtube-$apk_version first"
-		adb install -r $apk_filename || {
+		adb install -r "$apk_filename" || {
 			out "${RED}install failed, exiting!"
 			exit 1
 		}
