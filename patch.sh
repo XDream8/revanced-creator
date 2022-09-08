@@ -17,10 +17,25 @@ BLUE='\033[0;34m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
+out() {
+	# print a message
+	printf '%b\n' "$@${NC}"
+}
+
+notset() {
+	case $1 in '') return 0 ;; *) return 1 ;; esac
+}
+
+equals() {
+	case $1 in "$2") return 0 ;; *) return 1 ;; esac
+}
+
 check_dep() {
-	if [ ! "$(command -v $1)" ]; then
-		printf '%b\n' "${RED}$2${NC}"
+	if [ ! "$(command -v "$1")" ]; then
+		notset "$2" || out "${RED}$2"
 		exit 1
+	else
+		return 0
 	fi
 }
 
@@ -36,46 +51,47 @@ checkadb() {
 			sudo=
 		fi
 
-		printf '%b\n' "${YELLOW}starting adb server${NC}"
+		out "${YELLOW}starting adb server"
 		$sudo adb start-server || {
-			printf '%b\n' "${RED}starting adb server failed, exiting!${NC}"
+			out "${RED}starting adb server failed, exiting!"
 			exit 1
 		}
 	fi
 
 	device_id=$(adb devices | awk 'FNR == 2 {print $1}')
 	if [ "$device_id" = "" ]; then
-		printf '%b\n' "${RED}your phone is not connected to pc, exiting!${NC}"
+		out "${RED}your phone is not connected to pc, exiting!"
 		exit 1
 	else
-		printf '%b\n' "${YELLOW}adb device_id=$device_id"
+		out "${YELLOW}adb device_id=$device_id"
 	fi
 }
 
 checkyt() {
 	if [ ! "$(adb shell cmd package list packages | grep -o 'com.google.android.youtube')" ]; then
-		printf '%b\n' "${RED}root variant: install youtube v${apk_version} on your device to mount w/ integrations, exiting!${NC}"
+		out "${RED}root variant: install youtube v${apk_version} on your device to mount w/ integrations, exiting!"
 		exit 1
 	fi
 }
 
 get_latest_version_info() {
-	printf '%b\n' "${BLUE}getting latest versions info${NC}"
+	out "${BLUE}getting latest versions info"
 	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
 	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
 	# integrations
-	if [ "$what_to_patch" = "youtube" ]; then
-		revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | awk 'match($0, /([0-9][.]+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
-	fi
+	equals "$what_to_patch" "youtube" && revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | awk 'match($0, /([0-9][.]+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
+	## get apk_version
+	equals "$what_to_patch" "custom" || notset "$apk_version" && apk_version=$(curl -s -L "https://github.com/XDream8/revanced-creator/releases/tag/$what_to_patch" | awk 'match($0, /[A-z]([0-9].+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | sort | awk 'END{print}')
 	# give info
-	printf '%b\n' "${YELLOW}revanced_cli_version : $revanced_cli_version${NC}"
-	printf '%b\n' "${YELLOW}revanced_patches_version : $revanced_patches_version${NC}"
-	[ "$revanced_integrations_version" ] && printf '%b\n' "${YELLOW}revanced_integrations_version : $revanced_integrations_version${NC}"
+	out "${YELLOW}revanced_cli_version : $revanced_cli_version"
+	out "${YELLOW}revanced_patches_version : $revanced_patches_version"
+	notset "$revanced_integrations_version" || out "${YELLOW}revanced_integrations_version : $revanced_integrations_version"
+	equals "$what_to_patch" "custom" || out "${YELLOW}$what_to_patch version to be patched : $apk_version"
 }
 
 remove_old() {
-	if [ "$(command -v find)" ]; then
-		find . -maxdepth 1 -type f \( -name "revanced-*.jar" -or -name "$integrations_filename" \) ! \( -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$apk_filename" \) -delete
+	if check_dep "find"; then
+		find . -maxdepth 1 -type f \( -name "revanced-*.jar" -or -name "$integrations_filename" \) ! \( -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$apk_filename" \) -delete && out "${BLUE}removed olf files"
 	fi
 }
 
@@ -83,189 +99,169 @@ download_needed() {
 	# number
 	n=0
 
-	printf '%b\n' "${BLUE}Downloading needed files${NC}"
+	out "${BLUE}Downloading needed files"
 	for i in \
 		$cli_link \
 		$patches_link \
 		$integrations_link \
 		$apk_link; do
 		n=$((n + 1))
-		printf '%b\n' "${CYAN}$n) ${YELLOW}downloading $i${NC}"
+		out "${CYAN}$n) ${YELLOW}downloading $i"
 		$downloader $i
 	done
 }
 
-build_apk() {
+patch() {
+	out "${BLUE}patching process started(${RED}$root_text${BLUE})"
+	out "${BLUE}it may take a while please be patient"
 	base_cmd="java -jar $cli_filename \
 		-a $apk_filename \
 		-c \
 		-o $output_apk \
 		-b $patches_filename"
-	if [ "$1" ] && [ ! "$additional_args" = "" ]; then
-		# with $additional_args and required arg
+	if ! notset "additional_args"; then
+		# with $additional_args
 		$base_cmd \
-			$additional_args \
-			$1
-	elif [ "$1" ] && [ "$additional_args" = "" ]; then
-		# with required arg
-		$base_cmd \
-			$1
-	elif [ ! "$1" ] && [ ! "$additional_args" = "" ]; then
-		# non-root with $additional_args
-		$base_cmd \
-			$additional_args
-	elif [ ! "$1" ] && [ "$additional_args" = "" ]; then
-		# non-root
+		$additional_args
+	elif notset "$additional_args"; then
+		# without $additional_args
 		$base_cmd
 	fi
 }
 
-patch() {
-	printf '%b\n' "${BLUE}patching process started(${RED}$root_text${BLUE})${NC}"
-	printf '%b\n' "${BLUE}it may take a while please be patient${NC}"
-	if [ $root = 0 ] && [ "$what_to_patch" = "youtube" ]; then
-		youtube_arg="-m $integrations_filename"
-		build_apk "$youtube_arg"
-	elif [ $root = 0 ] && [ "$what_to_patch" = "reddit" ]; then
-		reddit_arg="-r"
-		build_apk "$reddit_arg"
-	elif [ $root = 0 ] && [ "$what_to_patch" = "tiktok" ]; then
-		tiktok_arg="-r"
-		build_apk "$tiktok_arg"
-	elif [ $root = 0 ]; then
-		build_apk
-	elif [ $root = 1 ] && [ "$what_to_patch" = "youtube" ]; then
-		root_args="-d $device_id \
-			    -m $integrations_filename \
-          -e microg-support \
-          --mount"
-		build_apk "$root_args"
+addarg() {
+	if notset "$additional_args"; then
+		additional_args="$@"
 	else
-		root_args="-d $device_id \
-          -e microg-support \
-          --mount"
-		build_apk "$root_args"
+		additional_args="$additional_args $@"
 	fi
 }
 
 main() {
 
 	## defaults
-	[ -z "$what_to_patch" ] && what_to_patch="youtube"
-	[ -z "$root" ] && root=0
-	[ -z "$additional_args" ] && additional_args=""
-
-	## check $root
-	if [ $root = 0 ]; then
-		root_text="non-root"
-	else
-		root_text="root"
-		printf '%b\n' "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds${NC}"
-		sleep 5s
-		checkadb
-	fi
-	
-	if [ ! "$what_to_patch" = "custom" ]; then
-		[ -z "$apk_version" ] && apk_version=$(curl -s -L "https://github.com/XDream8/revanced-creator/releases/tag/$what_to_patch" | awk 'match($0, /[A-z]([0-9].+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | sort | awk 'END{print}')
-	fi
-
-	## what should we patch
-	if [ "$what_to_patch" = "youtube" ]; then
-		apk_filename=YouTube-$apk_version.apk
-		[ -z "$output_apk" ] && output_apk=revanced-$apk_version-$root_text.apk
-	elif [ "$what_to_patch" = "youtube-music" ]; then
-		apk_filename=YouTube-Music-$apk_version.apk
-		[ -z "$output_apk" ] && output_apk=revanced-music-$apk_version-$root_text.apk
-	elif [ "$what_to_patch" = "twitter" ]; then
-		apk_filename=Twitter-$apk_version.apk
-		[ -z "$output_apk" ] && output_apk=revanced-twitter-$apk_version-$root_text.apk
-	elif [ "$what_to_patch" = "reddit" ]; then
-		apk_filename=Reddit-$apk_version.apk
-		[ -z "$output_apk" ] && output_apk=revanced-reddit-$apk_version-$root_text.apk
-	elif [ "$what_to_patch" = "tiktok" ]; then
-		apk_filename=TikTok-$apk_version.apk
-		[ -z "$output_apk" ] && output_apk=revanced-tiktok-$apk_version-$root_text.apk
-	elif [ "$what_to_patch" = "custom" ]; then
-		if [ -z "$apk_filename" ] && [ "$(command -v find)" ]; then
-			apk_filename=$(find . -maxdepth 1 -type f \( -name "*.apk" \) ! \( -name "app-release-unsigned.apk" -or -name "revanced-*.apk" \) | sort -R | awk -F'/' 'NR==1 {print $2}')
-		elif [ -z "$apk_filename" ] && [ ! "$(command -v find)" ]; then
-			printf '%b\n' "${RED}please specify an apk file using 'apk_filename' arg${NC}"
-			exit 1
-		else
-			[ -z "$apk_filename" ] && {
-				printf '%b\n' "${RED}please specify an apk file using 'apk_filename' arg${NC}"
-				exit 1
-			}
-		fi
-		if [ ! -f "$apk_filename" ]; then
-			printf '%b\n' "${RED}apk file does not exist, please specify an existing apk file using 'apk_filename' arg${NC}"
-			exit 1
-		fi
-		[ -z "$output_apk" ] && output_apk=revanced-$apk_filename
-	fi
-
-	## link to download $what_to_patch
-	if [ ! "$what_to_patch" = "custom" ]; then
-		[ ! -f "$apk_filename" ] && apk_link=https://github.com/XDream8/revanced-creator/releases/download/$what_to_patch/$apk_filename
-	fi
+	notset "$what_to_patch" && what_to_patch="youtube"
+	notset "$root" && root="0"
+	notset "$additional_args" && additional_args=""
 
 	## downloader
-	if [ -z "$downloader" ] && [ "$(command -v curl)" ]; then
+	if notset "$downloader" && check_dep "curl"; then
 		downloader="curl -qLJO"
-	elif [ -z "$downloader" ] && [ "$(command -v wget)" ]; then
+	elif notset "$downloader" && check_dep "wget"; then
 		downloader="wget"
 	fi
 
 	## dependecy checks
-	check_dep curl "curl is required, exiting!"
-	check_dep $downloader "$downloader is missing, exiting!"
-	check_dep java "java 17 is required, exiting!"
-	check_dep awk "awk is required, exiting!"
-	check_dep grep "grep is required, exiting!"
+	check_dep "curl" "curl is required, exiting!"
+	equals "$downloader" "curl*" || check_dep "${downloader% -*}" "${downloader% -*} is missing, exiting!"
+	equals "root" "1" && check_dep "adb" "adb is required for root variant, exiting!"
+	# check_dep "java" "java 17 is required, exiting!"
+	check_dep "awk" "awk is required, exiting!"
+	check_dep "grep" "grep is required, exiting!"
 
 	## java version check
 	JAVA_VERSION="$(java -version 2>&1 | grep -oe "version \".*\"" | awk 'match($0, /([0-9]+)/) {print substr($0, RSTART, RLENGTH)}')"
-	if [ $JAVA_VERSION -lt 17 ]; then
-		printf '%b\n' "${RED}java 17 is required but you have version $JAVA_VERSION, exiting!${NC}"
+	JAVA_VERSION=17
+	if [ "$JAVA_VERSION" -lt "17" ]; then
+		out "${RED}java 17 is required but you have version $JAVA_VERSION, exiting!"
 		exit 1
 	else
-		printf '%b\n' "${YELLOW}java version $JAVA_VERSION found${NC}"
+		out "${YELLOW}java version $JAVA_VERSION found"
 	fi
 
+	## check $root
+	equals "$root" "0" && root_text="non-root" || {
+		root_text="root"
+		out "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds"
+		sleep 5s
+		# checkadb
+		addarg "-d $device_id \
+          -e microg-support \
+          --mount"
+	}
+
+	## getting versions information
 	get_latest_version_info
 
-	if [ ! "$what_to_patch" = "custom" ]; then
-		printf '%b\n' "${YELLOW}$what_to_patch version to be patched : $apk_version${NC}"
-	else
-		printf '%b\n' "${YELLOW}custom apk : $apk_filename${NC}"
-	fi
-
-	##
+	## set filenames
 	cli_filename=revanced-cli-$revanced_cli_version-all.jar
 	patches_filename=revanced-patches-$revanced_patches_version.jar
 	integrations_filename=app-release-unsigned.apk
 
+	## what should we patch
+	case "$what_to_patch" in
+	*youtube*)
+		apk_filename=YouTube-$apk_version.apk
+		addarg "-m $integrations_filename"
+		;;
+	*youtube-music*)
+		apk_filename=YouTube-Music-$apk_version.apk
+		;;
+	*twitter*)
+		apk_filename=Twitter-$apk_version.apk
+		;;
+	*reddit*)
+		apk_filename=Reddit-$apk_version.apk
+		addarg "-r"
+		;;
+	*tiktok*)
+		apk_filename=TikTok-$apk_version.apk
+		addarg "-r"
+		;;
+	*custom*)
+		if notset "$apk_filename" && check_dep "find"; then
+			apk_filename=$(find . -maxdepth 1 -type f -iname "*.apk" -not -iname "app-release-unsigned.apk" -or -not -iname "revanced-*.apk" -or -not -iname "*.keystore" | sort -r | awk -F'/' 'NR==1 {print $2}')
+		elif [ -z "$apk_filename" ] && ! check_dep "find"; then
+			out "${RED}please specify an apk file using 'apk_filename' arg"
+			exit 1
+		else
+			[ -z "$apk_filename" ] && {
+				out "${RED}please specify an apk file using 'apk_filename' arg"
+				exit 1
+			}
+		fi
+		if [ ! -f "$apk_filename" ]; then
+			out "${RED}apk file does not exist, please specify an existing apk file using 'apk_filename' arg"
+			exit 1
+		fi
+		[ -z "$output_apk" ] && output_apk=revanced-$apk_filename
+		out "${YELLOW}custom apk : $apk_filename"
+		;;
+	*)
+		out "that is not supported by revanced-creator"
+		exit 1
+		;;
+	esac
+
+	## set output apk name
+	notset "$output_apk" && {
+		output_apk=revanced-${what_to_patch#*-}-$apk_version-$root_text.apk
+	}
+
+	## link to download $what_to_patch
+	[ ! -f "$apk_filename" ] && apk_link=https://github.com/XDream8/revanced-creator/releases/download/$what_to_patch/$apk_filename
+
+	## remove old files with find
 	remove_old
 
 	[ ! -f "$cli_filename" ] && cli_link=https://github.com/revanced/revanced-cli/releases/download/v$revanced_cli_version/$cli_filename
 	[ ! -f "$patches_filename" ] && patches_link=https://github.com/revanced/revanced-patches/releases/download/v$revanced_patches_version/$patches_filename
-	if [ "$what_to_patch" = "youtube" ]; then
-		[ ! -f "$integrations_filename" ] && integrations_link=https://github.com/revanced/revanced-integrations/releases/download/v$revanced_integrations_version/$integrations_filename
-	fi
+	equals "$what_to_patch" "youtube" && [ ! -f "$integrations_filename" ] && integrations_link=https://github.com/revanced/revanced-integrations/releases/download/v$revanced_integrations_version/$integrations_filename
 
 	download_needed
 
-	if [ $root = 1 ]; then
-		printf '%b\n' "${BLUE}root variant: installing stock youtube-$apk_version first${NC}"
+	equals "$root" "1" && {
+		out "${BLUE}root variant: installing stock youtube-$apk_version first"
 		adb install -r $apk_filename || {
-			printf '%b\n' "${RED}install failed, exiting!${NC}"
+			out "${RED}install failed, exiting!"
 			exit 1
 		}
 		checkyt
-	fi
+	}
 
 	patch
-	exit 0
 }
 
 main
+
+# vim: set sw=4 sts=4 ft=sh:
