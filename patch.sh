@@ -196,7 +196,7 @@ main() {
 	case "$what_to_patch" in
 	youtube)
 		apk_filename=YouTube-$apk_version.apk
-		addarg "-m $integrations_filename"
+		addarg "-m $integrations_filename -e amoled -i theme"
 		;;
 	youtube-music)
 		apk_filename=YouTube-Music-$apk_version.apk
