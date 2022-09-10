@@ -177,7 +177,7 @@ main() {
 		root_text="root"
 		out "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds${NC}"
 		sleep 5s
-		# checkadb
+		checkadb
 		addarg "-d $device_id \
           -e microg-support \
           --mount"
