@@ -77,16 +77,18 @@ checkyt() {
 
 get_latest_version_info() {
 	out "${BLUE}getting latest versions info"
-	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
-	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
-	# integrations
-	equals "$what_to_patch" "youtube" && revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | awk 'match($0, /([0-9][.]+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
-	## get apk_version
-	equals "$what_to_patch" "custom" || notset "$apk_version" && apk_version=$(curl -s -L "https://github.com/XDream8/revanced-creator/releases/tag/$what_to_patch" | awk 'match($0, /[A-z]([0-9].+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | sort | awk 'END{print}')
-	# give info
+	## revanced cli
+	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
+	revanced_cli_version=${revanced_cli_version#v}
 	out "${YELLOW}revanced_cli_version : $revanced_cli_version${NC}"
+	## revanced patches
+	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /([0-9][.]+).*.jar/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
 	out "${YELLOW}revanced_patches_version : $revanced_patches_version${NC}"
+	## integrations
+	equals "$what_to_patch" "youtube" && revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | awk 'match($0, /([0-9][.]+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
 	notset "$revanced_integrations_version" || out "${YELLOW}revanced_integrations_version : $revanced_integrations_version${NC}"
+	## apk_version
+	equals "$what_to_patch" "custom" || notset "$apk_version" && apk_version=$(curl -s -L "https://github.com/XDream8/revanced-creator/releases/tag/$what_to_patch" | awk 'match($0, /[A-z]([0-9].+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | sort | awk 'END{print}')
 	equals "$what_to_patch" "custom" || out "${YELLOW}$what_to_patch version to be patched : $apk_version${NC}"
 }
 
