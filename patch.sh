@@ -123,7 +123,7 @@ patch() {
 		-o $output_apk \
 		-b $patches_filename"
 	# shellcheck disable=2086
-	if ! notset "additional_args"; then
+	if ! notset "$additional_args"; then
 		# with $additional_args
 		$base_cmd \
 			$additional_args
@@ -156,12 +156,12 @@ main() {
 	fi
 
 	## dependecy checks
-	check_dep "curl" "curl is required, exiting!${NC}"
-	equals "$downloader" "curl*" || check_dep "${downloader% -*}" "${downloader% -*} is missing, exiting!${NC}"
-	equals "root" "1" && check_dep "adb" "adb is required for root variant, exiting!${NC}"
-	check_dep "java" "java 17 is required, exiting!${NC}"
-	check_dep "awk" "awk is required, exiting!${NC}"
-	check_dep "grep" "grep is required, exiting!${NC}"
+	check_dep "curl" "curl is required, exiting!"
+	equals "$downloader" "curl*" || check_dep "${downloader% -*}" "${downloader% -*} is missing, exiting!"
+	equals "root" "1" && check_dep "adb" "adb is required for root variant, exiting!"
+	check_dep "java" "java 17 is required, exiting!"
+	check_dep "awk" "awk is required, exiting!"
+	check_dep "grep" "grep is required, exiting!"
 
 	## java version check
 	JAVA_VERSION="$(java -version 2>&1 | grep -oe "version \".*\"" | awk 'match($0, /([0-9]+)/) {print substr($0, RSTART, RLENGTH)}')"
@@ -197,7 +197,7 @@ main() {
 	case "$what_to_patch" in
 	youtube)
 		apk_filename=YouTube-$apk_version.apk
-		addarg "-m $integrations_filename -e amoled -i theme"
+		addarg "-m $integrations_filename"
 		;;
 	youtube-music)
 		apk_filename=YouTube-Music-$apk_version.apk
