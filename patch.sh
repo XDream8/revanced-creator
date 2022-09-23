@@ -92,7 +92,7 @@ get_latest_version_info() {
         }
 	notset "$revanced_integrations_version" || out "${YELLOW}revanced_integrations_version : $revanced_integrations_version${NC}"
 	## apk_version
-	equals "$what_to_patch" "custom" || notset "$apk_version" && apk_version=$(curl -s -L "https://github.com/XDream8/revanced-creator/releases/tag/$what_to_patch" | awk 'match($0, /[A-z]([0-9].+).*.apk/) {print substr($0, RSTART, RLENGTH)}' | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | sort | awk 'END{print}')
+	equals "$what_to_patch" "custom" || notset "$apk_version" && apk_version=$(curl -s -L "https://api.github.com/repos/XDream8/revanced-creator/releases" | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | uniq | sort | awk 'END{print}')
 	equals "$what_to_patch" "custom" || out "${YELLOW}$what_to_patch version to be patched : $apk_version${NC}"
 }
 
