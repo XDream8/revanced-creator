@@ -70,7 +70,7 @@ checkadb() {
 checkyt() {
 	# shellcheck disable=2143
 	if [ ! "$(adb shell cmd package list packages | grep -o 'com.google.android.youtube')" ]; then
-		out "${RED}root variant: install youtube v${apk_version} on your device to mount w/ integrations, exiting!${NC}"
+		out "${RED}root variant: install $what_to_patch v${apk_version} on your device to mount w/ integrations, exiting!${NC}"
 		exit 1
 	fi
 }
@@ -86,10 +86,10 @@ get_latest_version_info() {
 	revanced_patches_version=${revanced_patches_version#v}
 	out "${YELLOW}revanced_patches_version : $revanced_patches_version${NC}"
 	## integrations
-	equals "$what_to_patch" "youtube" && {
+	if [ "$what_to_patch" = "youtube" ] || [ "$what_to_patch" = "tiktok" ]; then
 		revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
 		revanced_integrations_version=${revanced_integrations_version#v}
-	}
+	fi
 	notset "$revanced_integrations_version" || out "${YELLOW}revanced_integrations_version : $revanced_integrations_version${NC}"
 	## apk_version
 	equals "$what_to_patch" "custom" || notset "$apk_version" && apk_version=$(curl -s -L "https://api.github.com/repos/XDream8/revanced-creator/releases" | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | uniq | sort | awk 'END{print}')
@@ -215,7 +215,7 @@ main() {
 		;;
 	tiktok)
 		apk_filename=TikTok-$apk_version.apk
-		addarg "-r"
+		addarg "-r -m $integrations_filename"
 		;;
 	spotify)
 		apk_filename=Spotify-$apk_version.apk
