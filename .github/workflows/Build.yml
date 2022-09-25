@@ -26,7 +26,7 @@ jobs:
           sudo apt-get upgrade
           sudo apt install curl grep
 
-       - name: Build youtube variant
+       - name: Build youtube
          run: |
           # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator.keystore
           # export additional_args="--keystore=revanced-creator.keystore"
@@ -41,7 +41,7 @@ jobs:
             revanced-*-non-root.apk
             vanced-microg.apk
 
-       - name: Build youtube-music variant
+       - name: Build youtube-music
          run: |
           # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-music.keystore
           # export additional_args="--keystore=revanced-creator-music.keystore"
@@ -54,7 +54,7 @@ jobs:
            name: revanced-music
            path: revanced-music-*-non-root.apk
 
-       - name: Build reddit variant
+       - name: Build reddit
          run: |
           # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-reddit.keystore
           # export additional_args="--keystore=revanced-creator-reddit.keystore"
@@ -67,7 +67,7 @@ jobs:
            name: revanced-reddit
            path: revanced-reddit-*-non-root.apk
 
-       - name: Build twitter variant
+       - name: Build twitter
          run: |
           # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-twitter.keystore
           # export additional_args="--keystore=revanced-creator-twitter.keystore"
@@ -80,7 +80,7 @@ jobs:
            name: revanced-twitter
            path: revanced-twitter-*-non-root.apk
 
-       - name: Build tiktok variant
+       - name: Build tiktok
          run: |
           export what_to_patch="tiktok"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
@@ -90,3 +90,14 @@ jobs:
          with:
            name: revanced-tiktok
            path: revanced-tiktok-*-non-root.apk
+
+       - name: Build spotify
+         run: |
+          export what_to_patch="spotify"
+          sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+
+       - name: Upload Build Artifact(Spotify)
+         uses: actions/upload-artifact@v3
+         with:
+           name: revanced-spotify
+           path: revanced-spotify-*-non-root.apk
