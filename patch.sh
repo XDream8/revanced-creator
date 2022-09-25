@@ -219,7 +219,6 @@ main() {
 		;;
 	spotify)
 		apk_filename=Spotify-$apk_version.apk
-		addarg "-r"
 		;;
 	custom)
 		if notset "$apk_filename" && check_dep "find"; then
