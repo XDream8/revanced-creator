@@ -211,11 +211,10 @@ main() {
 		;;
 	reddit)
 		apk_filename=Reddit-$apk_version.apk
-		addarg "-r"
 		;;
 	tiktok)
 		apk_filename=TikTok-$apk_version.apk
-		addarg "-r -m $integrations_filename"
+		addarg "-m $integrations_filename"
 		;;
 	spotify)
 		apk_filename=Spotify-$apk_version.apk
