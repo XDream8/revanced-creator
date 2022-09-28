@@ -34,5 +34,5 @@ jobs:
         with:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
           repository: ${{ github.repository  }}
-          retain_days: 15
-          keep_minimum_runs: 6
+          retain_days: 10
+          keep_minimum_runs: 4
