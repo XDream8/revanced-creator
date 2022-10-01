@@ -41,13 +41,11 @@ $ ./patch.sh
 #### using custom apk
 here is how to patch user downloaded reddit apk \
 (!) if apk_filename is not set, script uses find to select an apk from the directory you are in randomly(if there is only one apk in the directory you are in it is fine) \
-(!) additional arg is only for reddit, other apps does not need it \
-(?) output_apk_name is optional
+(?) output_apk is optional
 ```sh
 $ export what_to_patch="custom"
 $ export apk_filename=reddit.apk
 $ export output_apk=revanced-reddit.apk
-$ export additional_args="-r"
 $ ./patch.sh
 ```
 #### additional_args
@@ -63,17 +61,12 @@ $ ./patch.sh
 ```
 #### output_apk
 you can set output apk name with this
-```
+```sh
 $ export output_apk="ReReddit.apk"
 $ ./patch.sh
 ```
 #### apk_version(defaults to latest)
-**Versions Available** \
-YouTube: 17.26.35, 17.27.39, 17.28.34, 17.29.34, 17.32.35 \
-YouTube-Music: 5.14.53, 5.16.51, 5.17.51 \
-Twitter: 9.52.0, 9.53.0 \
-Reddit: 2022.28.0 \
-TikTok: 25.8.2
+**To see versions available see the releases section**
 ```sh
 $ export apk_version=17.27.39
 $ ./patch.sh
