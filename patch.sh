@@ -78,16 +78,16 @@ checkyt() {
 get_latest_version_info() {
 	out "${BLUE}getting latest versions info"
 	## revanced cli
-	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
+	revanced_cli_version=$(curl -s -L https://github.com/inotia00/revanced-cli/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
 	revanced_cli_version=${revanced_cli_version#v}
 	out "${YELLOW}revanced_cli_version : $revanced_cli_version${NC}"
 	## revanced patches
-	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
+	revanced_patches_version=$(curl -s -L https://github.com/inotia00/revanced-patches/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
 	revanced_patches_version=${revanced_patches_version#v}
 	out "${YELLOW}revanced_patches_version : $revanced_patches_version${NC}"
 	## integrations
 	if [ "$what_to_patch" = "youtube" ] || [ "$what_to_patch" = "tiktok" ]; then
-		revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
+		revanced_integrations_version=$(curl -s -L https://github.com/inotia00/revanced-integrations/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
 		revanced_integrations_version=${revanced_integrations_version#v}
 	fi
 	notset "$revanced_integrations_version" || out "${YELLOW}revanced_integrations_version : $revanced_integrations_version${NC}"
