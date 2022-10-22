@@ -8,7 +8,7 @@ jobs:
   get-version:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
       - name: Fetch release version
@@ -17,7 +17,7 @@ jobs:
           jq -r ".tag_name" > release-versions/patches-latest.md
       - name: Check for modified files
         id: git-check
-        run: echo ::set-output name=modified::$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")
+        run: echo "modified=$([ -z "`git status --porcelain`" ] && echo "false" || echo "true")" >> $GITHUB_OUTPUT
       - name: Commit latest release version
         if: steps.git-check.outputs.modified == 'true'
         run: |
@@ -30,9 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@v2
+        uses: Mattraks/delete-workflow-runs@v2.0.3
         with:
           token: ${{ secrets.REPO_SCOPED_TOKEN }}
-          repository: ${{ github.repository  }}
+          repository: ${{ github.repository }}
           retain_days: 10
           keep_minimum_runs: 4
