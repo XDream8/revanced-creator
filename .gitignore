@@ -1,11 +1,5 @@
 revanced-cache/
-revanced-cli-*.jar
-revanced-patches-*.jar
-app-release-unsigned.apk
 revanced*.keystore
-revanced-*.apk
-YouTube*
-youtube*
-Reddit*
-Twitter*
+*.jar
 *.apk
+options.toml
