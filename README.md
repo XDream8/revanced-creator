@@ -20,11 +20,11 @@ Download the latest CI builds [here](https://nightly.link/XDream8/revanced-creat
 
 ## deps
 - sh(dash or bash)
-- curl(curl is required to get latest versions of revanced-*)
+- curl is used for fetching release numbers, aria2, axel, curl or wget is used for downloading needed files
 - awk
 - java(17)
-- grep
-- (optional)find(we use it to remove old versions of revanced-*, if there is any)
+- ripgrep or grep
+- find(**optional**)
 ## usage
 ```sh
 $ mkdir -p revanced
@@ -77,6 +77,7 @@ $ export root=0
 $ ./patch.sh
 ```
 #### downloader
+aria2, axel, curl, wget; they are detected in this order and the first detected is used
 ```sh
 $ export downloader="axel -n 16"
 $ ./patch.sh
@@ -84,7 +85,6 @@ $ ./patch.sh
 #### or you can use all these options together
 ```sh
 $ export root=0
-$ export downloader="axel -n 16"
 $ export additional_args="-i enable-wide-searchbar -i swipe-controls -e hide-shorts-button"
 $ export what_to_patch="youtube"
 $ export apk_version=17.27.39

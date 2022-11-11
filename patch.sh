@@ -5,10 +5,10 @@
 #---------------------------#
 #           deps            #
 #---------------------------#
-# curl, wget or $downloader #
+# aria2, axel, curl or wget #
 #          awk              #
 #         java(17)          #
-#          grep             #
+#     grep or ripgrep       #
 #---------------------------#
 
 RED='\033[0;31m'
@@ -69,7 +69,7 @@ checkadb() {
 
 checkyt() {
 	# shellcheck disable=2143
-	if [ ! "$(adb shell cmd package list packages | grep -o 'com.google.android.youtube')" ]; then
+	if [ ! "$(adb shell cmd package list packages | $grep -o 'com.google.android.youtube')" ]; then
 		out "${RED}root variant: install $what_to_patch v${apk_version} on your device to mount w/ integrations, exiting!${NC}"
 		exit 1
 	fi
@@ -92,7 +92,7 @@ get_latest_version_info() {
 	fi
 	notset "$revanced_integrations_version" || out "${YELLOW}revanced_integrations_version : $revanced_integrations_version${NC}"
 	## apk_version
-	equals "$what_to_patch" "custom" || notset "$apk_version" && apk_version=$(curl -s -L "https://api.github.com/repos/XDream8/revanced-creator/releases" | grep -ioe "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | uniq | sort | awk 'END{print}')
+	equals "$what_to_patch" "custom" || notset "$apk_version" && apk_version=$(curl -s -L "https://api.github.com/repos/XDream8/revanced-creator/releases" | $grep -io "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | uniq | sort | awk 'END{print}')
 	equals "$what_to_patch" "custom" || out "${YELLOW}$what_to_patch version to be patched : $apk_version${NC}"
 }
 
@@ -152,8 +152,19 @@ main() {
 	notset "$root" && root="0"
 	notset "$additional_args" && additional_args=""
 
+	## grep
+	if notset "$grep" && check_dep "rg"; then
+		grep="rg"
+	else
+		grep="grep"
+	fi
+
 	## downloader
-	if notset "$downloader" && check_dep "curl"; then
+	if notset "$downloader" && check_dep "aria2c"; then
+		downloader="aria2c -x 16 -s 1"
+	elif notset "$downloader" && check_dep "axel"; then
+		downloader="axel -n 16"
+	elif notset "$downloader" && check_dep "curl"; then
 		downloader="curl -qLJO"
 	elif notset "$downloader" && check_dep "wget"; then
 		downloader="wget"
@@ -161,14 +172,14 @@ main() {
 
 	## dependecy checks
 	check_dep "curl" "curl is required, exiting!"
-	equals "$downloader" "curl*" || check_dep "${downloader% -*}" "${downloader% -*} is missing, exiting!"
+	equals "$downloader" "curl*" || check_dep "${downloader%% -*}" "${downloader%% -*} is missing, exiting!"
 	equals "root" "1" && check_dep "adb" "adb is required for root variant, exiting!"
 	check_dep "java" "java 17 is required, exiting!"
 	check_dep "awk" "awk is required, exiting!"
 	check_dep "grep" "grep is required, exiting!"
 
 	## java version check
-	JAVA_VERSION="$(java -version 2>&1 | grep -oe "version \".*\"" | awk 'match($0, /([0-9]+)/) {print substr($0, RSTART, RLENGTH)}')"
+	JAVA_VERSION="$(java -version 2>&1 | $grep -o "version \".*\"" | awk 'match($0, /([0-9]+)/) {print substr($0, RSTART, RLENGTH)}')"
 	if [ "$JAVA_VERSION" -lt "17" ]; then
 		out "${RED}java 17 is required but you have version $JAVA_VERSION, exiting!${NC}"
 		exit 1
