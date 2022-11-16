@@ -212,7 +212,7 @@ main() {
 	case "$what_to_patch" in
 	youtube)
 		apk_filename=YouTube-$apk_version.apk
-		addarg "-m $integrations_filename"
+		addarg "-m $integrations_filename -e debugging"
 		;;
 	youtube-music)
 		apk_filename=YouTube-Music-$apk_version.apk
