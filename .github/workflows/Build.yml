@@ -54,6 +54,17 @@ jobs:
            name: revanced-music
            path: revanced-music-*-non-root.apk
 
+       - name: Build twitch
+         run: |
+          export what_to_patch="twitch"
+          sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+
+       - name: Upload Build Artifact(Twitch)
+         uses: actions/upload-artifact@v3
+         with:
+           name: revanced-twitch
+           path: revanced-twitch-*-non-root.apk
+
        - name: Build reddit
          run: |
           # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-reddit.keystore

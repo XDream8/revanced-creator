@@ -216,6 +216,10 @@ main() {
 		;;
 	youtube-music)
 		apk_filename=YouTube-Music-$apk_version.apk
+        ;;
+	twitch)
+		apk_filename=Twitch-$apk_version.apk
+		addarg "-e debug-mode"
 		;;
 	twitter)
 		apk_filename=Twitter-$apk_version.apk
