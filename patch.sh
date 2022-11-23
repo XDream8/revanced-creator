@@ -212,13 +212,15 @@ main() {
 	case "$what_to_patch" in
 	youtube)
 		apk_filename=YouTube-$apk_version.apk
-		addarg "-m $integrations_filename -e debugging"
+		integrations="enabled"
+		addarg "-e debugging"
 		;;
 	youtube-music)
 		apk_filename=YouTube-Music-$apk_version.apk
-        ;;
+		;;
 	twitch)
 		apk_filename=Twitch-$apk_version.apk
+		integrations="enabled"
 		addarg "-e debug-mode"
 		;;
 	twitter)
@@ -229,7 +231,7 @@ main() {
 		;;
 	tiktok)
 		apk_filename=TikTok-$apk_version.apk
-		addarg "-m $integrations_filename"
+		integrations="enabled"
 		;;
 	spotify)
 		apk_filename=Spotify-$apk_version.apk
@@ -258,6 +260,11 @@ main() {
 		exit 1
 		;;
 	esac
+
+	## add integrations arg
+	if [ "$integrations" = "enabled" ]; then
+		addarg "-m $integrations_filename"
+	fi
 
 	## set output apk name
 	notset "$output_apk" && {
