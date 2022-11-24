@@ -86,14 +86,11 @@ get_latest_version_info() {
 	revanced_patches_version=${revanced_patches_version#v}
 	out "${YELLOW}revanced_patches_version : $revanced_patches_version${NC}"
 	## integrations
-	if [ "$what_to_patch" = "youtube" ] || [ "$what_to_patch" = "tiktok" ]; then
+	if [ "$integrations" = "enabled" ]; then
 		revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
-		revanced_integrations_version=${revanced_integrations_version#v}
+		revanced_integrations_version=${revanced_integrations_version##v}
+		out "${YELLOW}revanced_integrations_version : $revanced_integrations_version${NC}"
 	fi
-	notset "$revanced_integrations_version" || out "${YELLOW}revanced_integrations_version : $revanced_integrations_version${NC}"
-	## apk_version
-	equals "$what_to_patch" "custom" || notset "$apk_version" && apk_version=$(curl -s -L "https://api.github.com/repos/XDream8/revanced-creator/releases" | $grep -io "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | uniq | sort | awk 'END{print}')
-	equals "$what_to_patch" "custom" || out "${YELLOW}$what_to_patch version to be patched : $apk_version${NC}"
 }
 
 remove_old() {
@@ -200,13 +197,9 @@ main() {
           --mount"
 	fi
 
-	## getting versions information
-	get_latest_version_info
-
-	## set filenames
-	cli_filename=revanced-cli-$revanced_cli_version-all.jar
-	patches_filename=revanced-patches-$revanced_patches_version.jar
-	integrations_filename=app-release-unsigned.apk
+	## get stock apk_version
+	equals "$what_to_patch" "custom" || notset "$apk_version" && apk_version=$(curl -s -L "https://api.github.com/repos/XDream8/revanced-creator/releases" | $grep -io "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | uniq | sort | awk 'END{print}')
+	equals "$what_to_patch" "custom" || out "${YELLOW}$what_to_patch version to be patched : $apk_version${NC}"
 
 	## what should we patch
 	case "$what_to_patch" in
@@ -261,6 +254,14 @@ main() {
 		;;
 	esac
 
+	## getting versions information
+	get_latest_version_info
+
+	## set filenames
+	cli_filename=revanced-cli-$revanced_cli_version-all.jar
+	patches_filename=revanced-patches-$revanced_patches_version.jar
+	integrations_filename=app-release-unsigned.apk
+
 	## add integrations arg
 	if [ "$integrations" = "enabled" ]; then
 		addarg "-m $integrations_filename"
@@ -279,7 +280,7 @@ main() {
 
 	[ ! -f "$cli_filename" ] && cli_link=https://github.com/revanced/revanced-cli/releases/download/v$revanced_cli_version/$cli_filename
 	[ ! -f "$patches_filename" ] && patches_link=https://github.com/revanced/revanced-patches/releases/download/v$revanced_patches_version/$patches_filename
-	if [ "$what_to_patch" = "youtube" ] || [ "$what_to_patch" = "tiktok" ]; then
+	if [ "$integrations" = "enabled" ]; then
 		[ ! -f "$integrations_filename" ] && integrations_link=https://github.com/revanced/revanced-integrations/releases/download/v$revanced_integrations_version/$integrations_filename
 	fi
 
