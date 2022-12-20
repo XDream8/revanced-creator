@@ -1,7 +1,7 @@
 # revanced-creator
 
 <p align="center">
-  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/workflow/status/XDream8/revanced-creator/Tests?color=red&style=flat-square">
+  <img alt="GitHub Workflow Status" src="https://img.shields.io/github/actions/workflow/status/XDream8/revanced-creator/Tests.yml?branch=main&color=red&style=flat-square">
   <img alt="GitHub" src="https://img.shields.io/github/license/XDream8/revanced-creator?color=blue&style=flat-square">
   <img alt="GitHub issues" src="https://img.shields.io/github/issues-raw/XDream8/revanced-creator?color=red&style=flat-square">
   <img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/XDream8/revanced-creator?color=red&style=flat-square">
