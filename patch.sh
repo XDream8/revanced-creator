@@ -152,7 +152,7 @@ main() {
 	## grep
 	if notset "$grep" && check_dep "rg"; then
 		grep="rg"
-	else
+	elif notset "$grep"; then
 		grep="grep"
 	fi
 
@@ -173,7 +173,7 @@ main() {
 	equals "root" "1" && check_dep "adb" "adb is required for root variant, exiting!"
 	check_dep "java" "java 17 is required, exiting!"
 	check_dep "awk" "awk is required, exiting!"
-	check_dep "grep" "grep is required, exiting!"
+	check_dep "${grep%% -*}" "${grep%% -*} is required, exiting!"
 
 	## java version check
 	JAVA_VERSION="$(java -version 2>&1 | $grep -o "version \".*\"" | awk 'match($0, /([0-9]+)/) {print substr($0, RSTART, RLENGTH)}')"
