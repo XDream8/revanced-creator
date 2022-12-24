@@ -32,10 +32,10 @@ jobs:
 
        - name: Check if revanced-youtube apk is created
          id: check_files
-         uses: andstor/file-existence-action@v1
+         uses: andstor/file-existence-action@v2
          with:
            files: "revanced-youtube-*-non-root.apk"
-           allow_failure: true
+           fail: true
 
        - name: Upload Build Artifact(youtube)
          uses: actions/upload-artifact@v3
@@ -69,10 +69,10 @@ jobs:
 
        - name: Check if revanced-music apk is created
          id: check_files
-         uses: andstor/file-existence-action@v1
+         uses: andstor/file-existence-action@v2
          with:
            files: "revanced-music-*-non-root.apk"
-           allow_failure: true
+           fail: true
 
        - name: Upload Build Artifact(YouTube-Music)
          uses: actions/upload-artifact@v3
@@ -101,10 +101,10 @@ jobs:
 
        - name: Check if revanced-twitch apk is created
          id: check_files
-         uses: andstor/file-existence-action@v1
+         uses: andstor/file-existence-action@v2
          with:
            files: "revanced-twitch-*-non-root.apk"
-           allow_failure: true
+           fail: true
 
        - name: Upload Build Artifact(Twitch)
          uses: actions/upload-artifact@v3
@@ -136,10 +136,10 @@ jobs:
 
        - name: Check if revanced-reddit apk is created
          id: check_files
-         uses: andstor/file-existence-action@v1
+         uses: andstor/file-existence-action@v2
          with:
            files: "revanced-reddit-*-non-root.apk"
-           allow_failure: true
+           fail: true
 
        - name: Upload Build Artifact(Reddit)
          uses: actions/upload-artifact@v3
@@ -170,10 +170,10 @@ jobs:
 
        - name: Check if revanced-twitter apk is created
          id: check_files
-         uses: andstor/file-existence-action@v1
+         uses: andstor/file-existence-action@v2
          with:
            files: "revanced-twitter-*-non-root.apk"
-           allow_failure: true
+           fail: true
 
        - name: Upload Build Artifact(Twitter)
          uses: actions/upload-artifact@v3
@@ -202,10 +202,10 @@ jobs:
 
        - name: Check if revanced-tiktok apk is created
          id: check_files
-         uses: andstor/file-existence-action@v1
+         uses: andstor/file-existence-action@v2
          with:
            files: "revanced-tiktok-*-non-root.apk"
-           allow_failure: true
+           fail: true
 
        - name: Upload Build Artifact(TikTok)
          uses: actions/upload-artifact@v3
@@ -234,10 +234,10 @@ jobs:
 
        - name: Check if revanced-spotify apk is created
          id: check_files
-         uses: andstor/file-existence-action@v1
+         uses: andstor/file-existence-action@v2
          with:
            files: "revanced-spotify-*-non-root.apk"
-           allow_failure: true
+           fail: true
 
        - name: Upload Build Artifact(Spotify)
          uses: actions/upload-artifact@v3
