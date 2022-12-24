@@ -8,7 +8,7 @@ on:
 
 
 jobs:
-   build:
+   build-youtube:
      runs-on: ubuntu-latest
 
      steps:
@@ -21,10 +21,7 @@ jobs:
            java-version: '17'
 
        - name: Update the system
-         run: |
-          sudo apt-get update
-          sudo apt-get upgrade
-          sudo apt install curl grep
+         run: sudo apt install curl ripgrep
 
        - name: Build youtube
          run: |
@@ -33,13 +30,35 @@ jobs:
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
           curl -OL https://github.com/XDream8/revanced-creator/releases/download/youtube/vanced-microg.apk
 
+       - name: Check if revanced-youtube apk is created
+         id: check_files
+         uses: andstor/file-existence-action@v1
+         with:
+           files: "revanced-youtube-*-non-root.apk"
+           allow_failure: true
+
        - name: Upload Build Artifact(youtube)
          uses: actions/upload-artifact@v3
          with:
            name: revanced-youtube
            path: |
-            revanced-*-non-root.apk
+            revanced-youtube-*-non-root.apk
             vanced-microg.apk
+
+   build-yt-music:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v3
+
+       - name: Install Java
+         uses: actions/setup-java@v3
+         with:
+           distribution: 'zulu'
+           java-version: '17'
+
+       - name: Update the system
+         run: sudo apt install curl ripgrep
 
        - name: Build youtube-music
          run: |
@@ -48,22 +67,65 @@ jobs:
           export what_to_patch="youtube-music"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
+       - name: Check if revanced-music apk is created
+         id: check_files
+         uses: andstor/file-existence-action@v1
+         with:
+           files: "revanced-music-*-non-root.apk"
+           allow_failure: true
+
        - name: Upload Build Artifact(YouTube-Music)
          uses: actions/upload-artifact@v3
          with:
            name: revanced-music
            path: revanced-music-*-non-root.apk
 
+   build-twitch:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v3
+
+       - name: Install Java
+         uses: actions/setup-java@v3
+         with:
+           distribution: 'zulu'
+           java-version: '17'
+
+       - name: Update the system
+         run: sudo apt install curl ripgrep
        - name: Build twitch
          run: |
           export what_to_patch="twitch"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+
+       - name: Check if revanced-twitch apk is created
+         id: check_files
+         uses: andstor/file-existence-action@v1
+         with:
+           files: "revanced-twitch-*-non-root.apk"
+           allow_failure: true
 
        - name: Upload Build Artifact(Twitch)
          uses: actions/upload-artifact@v3
          with:
            name: revanced-twitch
            path: revanced-twitch-*-non-root.apk
+
+   build-reddit:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v3
+
+       - name: Install Java
+         uses: actions/setup-java@v3
+         with:
+           distribution: 'zulu'
+           java-version: '17'
+
+       - name: Update the system
+         run: sudo apt install curl ripgrep
 
        - name: Build reddit
          run: |
@@ -72,12 +134,33 @@ jobs:
           export what_to_patch="reddit"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
+       - name: Check if revanced-reddit apk is created
+         id: check_files
+         uses: andstor/file-existence-action@v1
+         with:
+           files: "revanced-reddit-*-non-root.apk"
+           allow_failure: true
+
        - name: Upload Build Artifact(Reddit)
          uses: actions/upload-artifact@v3
          with:
            name: revanced-reddit
            path: revanced-reddit-*-non-root.apk
 
+   build-twitter:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v3
+
+       - name: Install Java
+         uses: actions/setup-java@v3
+         with:
+           distribution: 'zulu'
+           java-version: '17'
+
+       - name: Update the system
+         run: sudo apt install curl ripgrep
        - name: Build twitter
          run: |
           # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-twitter.keystore
@@ -85,16 +168,44 @@ jobs:
           export what_to_patch="twitter"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
+       - name: Check if revanced-twitter apk is created
+         id: check_files
+         uses: andstor/file-existence-action@v1
+         with:
+           files: "revanced-twitter-*-non-root.apk"
+           allow_failure: true
+
        - name: Upload Build Artifact(Twitter)
          uses: actions/upload-artifact@v3
          with:
            name: revanced-twitter
            path: revanced-twitter-*-non-root.apk
 
+   build-tiktok:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v3
+
+       - name: Install Java
+         uses: actions/setup-java@v3
+         with:
+           distribution: 'zulu'
+           java-version: '17'
+
+       - name: Update the system
+         run: sudo apt install curl ripgrep
        - name: Build tiktok
          run: |
           export what_to_patch="tiktok"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+
+       - name: Check if revanced-tiktok apk is created
+         id: check_files
+         uses: andstor/file-existence-action@v1
+         with:
+           files: "revanced-tiktok-*-non-root.apk"
+           allow_failure: true
 
        - name: Upload Build Artifact(TikTok)
          uses: actions/upload-artifact@v3
@@ -102,10 +213,31 @@ jobs:
            name: revanced-tiktok
            path: revanced-tiktok-*-non-root.apk
 
+   build-spotify:
+     runs-on: ubuntu-latest
+
+     steps:
+       - uses: actions/checkout@v3
+
+       - name: Install Java
+         uses: actions/setup-java@v3
+         with:
+           distribution: 'zulu'
+           java-version: '17'
+
+       - name: Update the system
+         run: sudo apt install curl ripgrep
        - name: Build spotify
          run: |
           export what_to_patch="spotify"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
+
+       - name: Check if revanced-spotify apk is created
+         id: check_files
+         uses: andstor/file-existence-action@v1
+         with:
+           files: "revanced-spotify-*-non-root.apk"
+           allow_failure: true
 
        - name: Upload Build Artifact(Spotify)
          uses: actions/upload-artifact@v3
