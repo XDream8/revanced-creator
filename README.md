@@ -16,7 +16,7 @@
 3. creating revanced app according to [revanced-documentation](https://github.com/revanced/revanced-documentation)
 
 **Check out [github action artifacts](https://github.com/XDream8/revanced-creator/actions) for revanced apks built with this script**. \
-Download the latest CI builds [here](https://nightly.link/XDream8/revanced-creator/workflows/Build/main).
+Download the latest CI builds [here](https://nightly.link/XDream8/revanced-creator/workflows/ci/main).
 
 ## deps
 - sh(dash or bash)
