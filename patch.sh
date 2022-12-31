@@ -31,8 +31,8 @@ equals() {
 }
 
 check_dep() {
-	if [ ! "$(command -v "$1")" ]; then
-		notset "$2" || out "${RED}$2${NC}"
+	if ! command -v "$1" >/dev/null; then
+		[ "$2" ] && out "${RED}$2${NC}"
 		return 1
 	else
 		return 0
@@ -111,8 +111,9 @@ download_needed() {
 		$apk_link; do
 		n=$((n + 1))
 		out "${CYAN}$n) ${YELLOW}downloading $i${NC}"
-		$downloader "$i"
+		$downloader "$i" &
 	done
+	wait
 }
 
 patch() {
@@ -145,9 +146,9 @@ addarg() {
 main() {
 
 	## defaults
-	notset "$what_to_patch" && what_to_patch="youtube"
-	notset "$root" && root="0"
-	notset "$additional_args" && additional_args=""
+	: "${what_to_patch=youtube}"
+	: "${root=0}"
+	: "${additional_args=}"
 
 	## grep
 	if notset "$grep" && check_dep "rg"; then
@@ -170,7 +171,7 @@ main() {
 	## dependecy checks
 	check_dep "curl" "curl is required, exiting!"
 	equals "$downloader" "curl*" || check_dep "${downloader%% -*}" "${downloader%% -*} is missing, exiting!"
-	equals "root" "1" && check_dep "adb" "adb is required for root variant, exiting!"
+	equals "$root" "1" && check_dep "adb" "adb is required for root variant, exiting!"
 	check_dep "java" "java 17 is required, exiting!"
 	check_dep "awk" "awk is required, exiting!"
 	check_dep "${grep%% -*}" "${grep%% -*} is required, exiting!"
@@ -185,7 +186,7 @@ main() {
 	fi
 
 	## check $root
-	if equals "$root" "0"; then
+	if [ "$root" -eq 0 ]; then
 		root_text="non-root"
 	else
 		root_text="root"
@@ -198,14 +199,14 @@ main() {
 	fi
 
 	## get stock apk_version
-	equals "$what_to_patch" "custom" || {
+	if [ ! "$what_to_patch" = "custom" ]; then
 		notset "$apk_version" && apk_version=$(curl -sL "https://api.github.com/repos/XDream8/revanced-creator/releases" | $grep -io "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | uniq | sort | awk 'END{print}')
-    notset "$apk_version" && {
+		notset "$apk_version" && {
 			out "${RED}getting $what_to_patch apk version failed, exiting!${NC}"
 			exit 1
 		}
 		out "${YELLOW}$what_to_patch version to be patched : $apk_version${NC}"
-	}
+	fi
 
 	## what should we patch
 	case "$what_to_patch" in
@@ -292,14 +293,14 @@ main() {
 
 	download_needed
 
-	equals "$root" "1" && {
+	if [ "$root" -eq 1 ]; then
 		out "${BLUE}root variant: installing stock youtube-$apk_version first${NC}"
 		adb install -r "$apk_filename" || {
 			out "${RED}install failed, exiting!${NC}"
 			exit 1
 		}
 		checkyt
-	}
+	fi
 
 	patch
 }
