@@ -75,20 +75,35 @@ checkyt() {
 	fi
 }
 
-get_latest_version_info() {
-	out "${BLUE}getting latest versions info"
+get_version_info() {
 	## revanced cli
-	revanced_cli_version=$(curl -s -L https://github.com/revanced/revanced-cli/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
-	revanced_cli_version=${revanced_cli_version#v}
+	resp=$(curl -s -L https://github.com/revanced/revanced-"$1"/releases/latest)
+	ver=$(printf '%s' "$resp" | $grep -oe "v[0-9].*[0-9]" | awk -F'/' 'NR==1 {print $1}')
+	ver=${ver#v}
+	printf '%s\n' "$ver" >"cache/tmp.revanced_$1"
+}
+
+get_and_print_versions() {
+	## getting versions information
+	out "${BLUE}getting latest versions info${NC}"
+	for i in cli patches integrations; do
+		get_version_info "$i" &
+		if [ "$i" = "integrations" ] && [ "$integrations" = "enabled" ]; then
+			get_version_info "$i" &
+		fi
+	done
+
+	## wait for getting versions to get finished
+	wait
+
+	for i in cli patches integrations; do
+		eval "revanced_${i}_version=$(cat cache/tmp.revanced_$i)"
+	done
+
+	## print info
 	out "${YELLOW}revanced_cli_version : $revanced_cli_version${NC}"
-	## revanced patches
-	revanced_patches_version=$(curl -s -L https://github.com/revanced/revanced-patches/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
-	revanced_patches_version=${revanced_patches_version#v}
 	out "${YELLOW}revanced_patches_version : $revanced_patches_version${NC}"
-	## integrations
 	if [ "$integrations" = "enabled" ]; then
-		revanced_integrations_version=$(curl -s -L https://github.com/revanced/revanced-integrations/releases/latest | awk 'match($0, /v([0-9].*[0-9])/) {print substr($0, RSTART, RLENGTH)}' | awk -F'/' 'NR==1 {print $1}')
-		revanced_integrations_version=${revanced_integrations_version##v}
 		out "${YELLOW}revanced_integrations_version : $revanced_integrations_version${NC}"
 	fi
 }
@@ -149,6 +164,8 @@ main() {
 	: "${what_to_patch=youtube}"
 	: "${root=0}"
 	: "${additional_args=}"
+
+	[ ! -d "cache" ] && mkdir -p cache
 
 	## grep
 	if notset "$grep" && check_dep "rg"; then
@@ -261,13 +278,13 @@ main() {
 		;;
 	esac
 
-	## getting versions information
-	get_latest_version_info
+	## get and print versions
+	get_and_print_versions
 
 	## set filenames
 	cli_filename=revanced-cli-$revanced_cli_version-all.jar
 	patches_filename=revanced-patches-$revanced_patches_version.jar
-	integrations_filename=app-release-unsigned.apk
+	integrations_filename=revanced-integrations-$revanced_integrations_version.apk
 
 	## add integrations arg
 	if [ "$integrations" = "enabled" ]; then
@@ -292,6 +309,10 @@ main() {
 	fi
 
 	download_needed
+
+	for tmp_file in "cache/tmp.revanced_"*; do
+		rm -rf $tmp_file
+	done
 
 	if [ "$root" -eq 1 ]; then
 		out "${BLUE}root variant: installing stock youtube-$apk_version first${NC}"
