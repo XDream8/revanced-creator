@@ -97,7 +97,7 @@ get_and_print_versions() {
 	wait
 
 	for i in cli patches integrations; do
-		eval "revanced_${i}_version=$(cat cache/tmp.revanced_$i)"
+		export "revanced_${i}_version=$(cat cache/tmp.revanced_$i)"
 	done
 
 	## print info
@@ -311,7 +311,7 @@ main() {
 	download_needed
 
 	for tmp_file in "cache/tmp.revanced_"*; do
-		rm -rf $tmp_file
+		rm -rf "$tmp_file"
 	done
 
 	if [ "$root" -eq 1 ]; then
