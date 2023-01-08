@@ -217,7 +217,7 @@ main() {
 
 	## get stock apk_version
 	if [ ! "$what_to_patch" = "custom" ]; then
-		notset "$apk_version" && apk_version=$(curl -sL "https://api.github.com/repos/XDream8/revanced-creator/releases" | $grep -io "$what_to_patch-[0-9].*[0-9]" | grep -o "[0-9].*[0-9]" | uniq | sort | awk 'END{print}')
+		notset "$apk_version" && apk_version=$(curl -sL "https://api.github.com/repos/XDream8/revanced-creator/releases" | $grep -ioe "$what_to_patch-[0-9].*[0-9]" | $grep -oe "[0-9].*[0-9]" | uniq | sort | awk 'END{print}')
 		notset "$apk_version" && {
 			out "${RED}getting $what_to_patch apk version failed, exiting!${NC}"
 			exit 1
