@@ -4,4 +4,5 @@ revanced*.keystore
 *.jar
 *.apk
 *.aria2
+*aapt2*
 options.toml

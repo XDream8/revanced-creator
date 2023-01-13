@@ -123,6 +123,7 @@ download_needed() {
 		$cli_link \
 		$patches_link \
 		$integrations_link \
+		$aapt2_link \
 		$apk_link; do
 		n=$((n + 1))
 		out "${CYAN}$n) ${YELLOW}downloading $i${NC}"
@@ -213,6 +214,14 @@ main() {
 		addarg "-d $device_id \
           -e microg-support \
           --mount"
+	fi
+
+	# check termux
+	if command -v termux-setup-storage; then
+		check_dep "tar" "tar is required for termux, exiting!"
+		addarg "--custom-aapt2-binary=./aapt2"
+		aapt2_filename="termux-custom-aapt2.tar.gz"
+		aapt2_link="https://github.com/XDream8/revanced-creator/releases/download/other/$aapt2_filename"
 	fi
 
 	## get stock apk_version
@@ -321,6 +330,10 @@ main() {
 			exit 1
 		}
 		checkyt
+	fi
+
+	if command -v termux-setup-storage && [ -f "aapt2" ]; then
+		tar xvzf "$aapt2_filename"
 	fi
 
 	patch
