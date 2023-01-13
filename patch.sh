@@ -217,7 +217,7 @@ main() {
 	fi
 
 	# check termux
-	if command -v termux-setup-storage; then
+	if command -v termux-setup-storage >/dev/null; then
 		check_dep "tar" "tar is required for termux, exiting!"
 		addarg "--custom-aapt2-binary=./aapt2"
 		aapt2_filename="termux-custom-aapt2.tar.gz"
@@ -332,8 +332,9 @@ main() {
 		checkyt
 	fi
 
-	if command -v termux-setup-storage && [ -f "aapt2" ]; then
+	if command -v termux-setup-storage >/dev/null && [ -f "aapt2" ]; then
 		tar xvzf "$aapt2_filename"
+		chmod +x aapt2
 	fi
 
 	patch
