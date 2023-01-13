@@ -110,7 +110,7 @@ get_and_print_versions() {
 
 remove_old() {
 	if check_dep "find"; then
-		find . -maxdepth 1 -type f \( -name "revanced-*.jar" -or -name "$integrations_filename" \) ! \( -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$apk_filename" \) -delete && out "${BLUE}removed old files${NC}"
+		find . -maxdepth 1 -type f -name "revanced-*.jar" ! \( -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$integrations_filename" -or -name "$apk_filename" \) -delete && out "${BLUE}removed old files${NC}"
 	fi
 }
 
@@ -216,12 +216,20 @@ main() {
           --mount"
 	fi
 
-	# check termux
+	# termux support
 	if command -v termux-setup-storage >/dev/null; then
 		check_dep "tar" "tar is required for termux, exiting!"
+		case "$(uname -m)" in
+		aarch64)
+			aapt2_filename="termux-arm64-v8a-aapt2.tar.gz"
+			;;
+		*)
+			out "that architecture is not supported by revanced-creator at the moment, please create a issue${NC}"
+			exit 1
+			;;
+		esac
 		addarg "--custom-aapt2-binary=./aapt2"
-		aapt2_filename="termux-custom-aapt2.tar.gz"
-		aapt2_link="https://github.com/XDream8/revanced-creator/releases/download/other/$aapt2_filename"
+		[ ! -f "aapt2" ] && aapt2_link="https://github.com/XDream8/revanced-creator/releases/download/other/$aapt2_filename"
 	fi
 
 	## get stock apk_version
