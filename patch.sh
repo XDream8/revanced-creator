@@ -1,4 +1,5 @@
 #!/bin/sh -e
+# shellcheck disable=2154
 
 #---------------------------#
 #     Made by XDream8       #
@@ -218,18 +219,19 @@ main() {
 
 	# termux support
 	if command -v termux-setup-storage >/dev/null; then
-		check_dep "tar" "tar is required for termux, exiting!"
+		## check arch
 		case "$(uname -m)" in
 		aarch64)
-			aapt2_filename="termux-arm64-v8a-aapt2.tar.gz"
+			aapt2_filename="termux-arm64-v8a-aapt2"
 			;;
 		*)
 			out "that architecture is not supported by revanced-creator at the moment, please create a issue${NC}"
 			exit 1
 			;;
 		esac
-		addarg "--custom-aapt2-binary=./aapt2"
-		[ ! -f "aapt2" ] && aapt2_link="https://github.com/XDream8/revanced-creator/releases/download/other/$aapt2_filename"
+
+		addarg "--custom-aapt2-binary=$aapt2_filename"
+		[ ! -f "$aapt2_filename" ] && aapt2_link="https://github.com/XDream8/revanced-creator/releases/download/other/$aapt2_filename"
 	fi
 
 	## get stock apk_version
@@ -340,9 +342,8 @@ main() {
 		checkyt
 	fi
 
-	if command -v termux-setup-storage >/dev/null && [ -f "aapt2" ]; then
-		tar xvzf "$aapt2_filename"
-		chmod +x aapt2
+	if [ -f "$aapt2_filename" ]; then
+		chmod +x "$aapt2_filename"
 	fi
 
 	patch
