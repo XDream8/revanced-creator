@@ -21,12 +21,17 @@ jobs:
            java-version: '17'
 
        - name: Update the system
-         run: sudo apt install curl ripgrep
+         run: sudo apt install aria2 curl ripgrep
+
+       - name: Get keystore file
+         env:
+           REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
+         run: |
+             printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
 
        - name: Build youtube
          run: |
-          # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator.keystore
-          # export additional_args="--keystore=revanced-creator.keystore"
+          export additional_args="--keystore=revanced-creator.keystore"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
           curl -OL https://github.com/XDream8/revanced-creator/releases/download/youtube/vanced-microg.apk
 
@@ -58,12 +63,17 @@ jobs:
            java-version: '17'
 
        - name: Update the system
-         run: sudo apt install curl ripgrep
+         run: sudo apt install aria2 curl ripgrep
 
+       - name: Get keystore file
+         env:
+           REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
+         run: |
+             printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
+       
        - name: Build youtube-music
          run: |
-          # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-music.keystore
-          # export additional_args="--keystore=revanced-creator-music.keystore"
+          export additional_args="--keystore=revanced-creator.keystore"
           export what_to_patch="youtube-music"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
@@ -93,9 +103,17 @@ jobs:
            java-version: '17'
 
        - name: Update the system
-         run: sudo apt install curl ripgrep
+         run: sudo apt install aria2 curl ripgrep
+       
+       - name: Get keystore file
+         env:
+           REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
+         run: |
+             printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
+       
        - name: Build twitch
          run: |
+          export additional_args="--keystore=revanced-creator.keystore"
           export what_to_patch="twitch"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
@@ -125,12 +143,17 @@ jobs:
            java-version: '17'
 
        - name: Update the system
-         run: sudo apt install curl ripgrep
+         run: sudo apt install aria2 curl ripgrep
 
+       - name: Get keystore file
+         env:
+           REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
+         run: |
+             printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
+       
        - name: Build reddit
          run: |
-          # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-reddit.keystore
-          # export additional_args="--keystore=revanced-creator-reddit.keystore"
+          export additional_args="--keystore=revanced-creator.keystore"
           export what_to_patch="reddit"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
@@ -160,11 +183,17 @@ jobs:
            java-version: '17'
 
        - name: Update the system
-         run: sudo apt install curl ripgrep
+         run: sudo apt install aria2 curl ripgrep
+       
+       - name: Get keystore file
+         env:
+           REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
+         run: |
+             printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
+       
        - name: Build twitter
          run: |
-          # curl -OL https://github.com/XDream8/revanced-creator/releases/download/keystores/revanced-creator-twitter.keystore
-          # export additional_args="--keystore=revanced-creator-twitter.keystore"
+          export additional_args="--keystore=revanced-creator.keystore"
           export what_to_patch="twitter"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
@@ -194,9 +223,17 @@ jobs:
            java-version: '17'
 
        - name: Update the system
-         run: sudo apt install curl ripgrep
+         run: sudo apt install aria2 curl ripgrep
+
+       - name: Get keystore file
+         env:
+           REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
+         run: |
+             printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
+
        - name: Build tiktok
          run: |
+          export additional_args="--keystore=revanced-creator.keystore"
           export what_to_patch="tiktok"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
@@ -226,9 +263,17 @@ jobs:
            java-version: '17'
 
        - name: Update the system
-         run: sudo apt install curl ripgrep
+         run: sudo apt install aria2 curl ripgrep
+       
+       - name: Get keystore file
+         env:
+           REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
+         run: |
+             printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
+       
        - name: Build spotify
          run: |
+          export additional_args="--keystore=revanced-creator.keystore"
           export what_to_patch="spotify"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
