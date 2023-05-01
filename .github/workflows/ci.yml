@@ -5,9 +5,6 @@ on:
       - 'release-versions/*'
   workflow_dispatch:
 jobs:
-  defaults:
-    run:
-      working-directory: ${{ env.working-directory }}
   keystore:
     runs-on: ubuntu-latest
     steps:
