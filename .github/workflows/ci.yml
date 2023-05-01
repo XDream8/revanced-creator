@@ -11,6 +11,7 @@ jobs:
       - name: Update the system
         run: sudo apt install aria2 curl ripgrep
   build-youtube:
+    needs: update-system
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -47,6 +48,7 @@ jobs:
             revanced-youtube-*-non-root.apk
             vanced-microg.apk
   build-yt-music:
+    needs: update-system
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -81,6 +83,7 @@ jobs:
           name: revanced-music
           path: revanced-music-*-non-root.apk
   build-twitch:
+    needs: update-system
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -115,6 +118,7 @@ jobs:
           name: revanced-twitch
           path: revanced-twitch-*-non-root.apk
   build-reddit:
+    needs: update-system
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -149,6 +153,7 @@ jobs:
           name: revanced-reddit
           path: revanced-reddit-*-non-root.apk
   build-twitter:
+    needs: update-system
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -183,6 +188,7 @@ jobs:
           name: revanced-twitter
           path: revanced-twitter-*-non-root.apk
   build-tiktok:
+    needs: update-system
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -217,6 +223,7 @@ jobs:
           name: revanced-tiktok
           path: revanced-tiktok-*-non-root.apk
   build-spotify:
+    needs: update-system
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
