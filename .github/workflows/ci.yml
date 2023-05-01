@@ -15,6 +15,7 @@ jobs:
           REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
         run: |
           if [ ! "$REVANCED_CREATOR_KEYSTORE" = "" ]; then
+            mkdir -p shared/
             printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > shared/revanced-creator.keystore
           fi
       - name: Temporarily save keystore file
