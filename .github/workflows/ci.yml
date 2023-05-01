@@ -5,7 +5,23 @@ on:
       - 'release-versions/*'
   workflow_dispatch:
 jobs:
+  defaults:
+    run:
+      working-directory: ${{ env.working-directory }}
+  keystore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Update the system
+        run: sudo apt install aria2 curl ripgrep
+      - name: Get keystore file
+        env:
+          REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
+        run: |
+          if [ ! "$REVANCED_CREATOR_KEYSTORE" = "" ]; then
+            printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
+          fi
   build-youtube:
+    needs: keystore
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -14,14 +30,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Update the system
-        run: sudo apt install aria2 curl ripgrep
-      - name: Get keystore file
-        if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
-        env:
-          REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
-        run: |
-          printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
       - name: Build youtube
         run: |
           if [ -f "revanced-creator.keystore" ]; then
@@ -43,6 +51,7 @@ jobs:
             revanced-youtube-*-non-root.apk
             vanced-microg.apk
   build-yt-music:
+    needs: keystore
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -51,14 +60,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Update the system
-        run: sudo apt install aria2 curl ripgrep
-      - name: Get keystore file
-        if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
-        env:
-          REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
-        run: |
-          printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
       - name: Build youtube-music
         run: |
           if [ -f "revanced-creator.keystore" ]; then
@@ -78,6 +79,7 @@ jobs:
           name: revanced-music
           path: revanced-music-*-non-root.apk
   build-twitch:
+    needs: keystore
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -86,14 +88,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Update the system
-        run: sudo apt install aria2 curl ripgrep
-      - name: Get keystore file
-        if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
-        env:
-          REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
-        run: |
-          printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
       - name: Build twitch
         run: |
           if [ -f "revanced-creator.keystore" ]; then
@@ -113,6 +107,7 @@ jobs:
           name: revanced-twitch
           path: revanced-twitch-*-non-root.apk
   build-reddit:
+    needs: keystore
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -121,14 +116,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Update the system
-        run: sudo apt install aria2 curl ripgrep
-      - name: Get keystore file
-        if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
-        env:
-          REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
-        run: |
-          printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
       - name: Build reddit
         run: |
           if [ -f "revanced-creator.keystore" ]; then
@@ -148,6 +135,7 @@ jobs:
           name: revanced-reddit
           path: revanced-reddit-*-non-root.apk
   build-twitter:
+    needs: keystore
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -156,14 +144,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Update the system
-        run: sudo apt install aria2 curl ripgrep
-      - name: Get keystore file
-        if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
-        env:
-          REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
-        run: |
-          printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
       - name: Build twitter
         run: |
           if [ -f "revanced-creator.keystore" ]; then
@@ -183,6 +163,7 @@ jobs:
           name: revanced-twitter
           path: revanced-twitter-*-non-root.apk
   build-tiktok:
+    needs: keystore
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -191,14 +172,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Update the system
-        run: sudo apt install aria2 curl ripgrep
-      - name: Get keystore file
-        if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
-        env:
-          REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
-        run: |
-          printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
       - name: Build tiktok
         run: |
           if [ -f "revanced-creator.keystore" ]; then
@@ -218,6 +191,7 @@ jobs:
           name: revanced-tiktok
           path: revanced-tiktok-*-non-root.apk
   build-spotify:
+    needs: keystore
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -226,14 +200,6 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-      - name: Update the system
-        run: sudo apt install aria2 curl ripgrep
-      - name: Get keystore file
-        if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
-        env:
-          REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
-        run: |
-          printf '%s' "$REVANCED_CREATOR_KEYSTORE" | base64 -d - > revanced-creator.keystore
       - name: Build spotify
         run: |
           if [ -f "revanced-creator.keystore" ]; then
