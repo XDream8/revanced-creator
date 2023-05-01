@@ -24,6 +24,7 @@ jobs:
          run: sudo apt install aria2 curl ripgrep
 
        - name: Get keystore file
+         if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
          env:
            REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
          run: |
@@ -31,7 +32,9 @@ jobs:
 
        - name: Build youtube
          run: |
-          export additional_args="--keystore=revanced-creator.keystore"
+	  if [ -f "revanced-creator.keystore" ]; then
+	    export additional_args="--keystore=revanced-creator.keystore"
+	  fi
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
           curl -OL https://github.com/XDream8/revanced-creator/releases/download/youtube/vanced-microg.apk
 
@@ -66,6 +69,7 @@ jobs:
          run: sudo apt install aria2 curl ripgrep
 
        - name: Get keystore file
+         if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
          env:
            REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
          run: |
@@ -73,7 +77,9 @@ jobs:
        
        - name: Build youtube-music
          run: |
-          export additional_args="--keystore=revanced-creator.keystore"
+	  if [ -f "revanced-creator.keystore" ]; then
+	    export additional_args="--keystore=revanced-creator.keystore"
+	  fi
           export what_to_patch="youtube-music"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
@@ -106,6 +112,7 @@ jobs:
          run: sudo apt install aria2 curl ripgrep
        
        - name: Get keystore file
+         if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
          env:
            REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
          run: |
@@ -113,7 +120,9 @@ jobs:
        
        - name: Build twitch
          run: |
-          export additional_args="--keystore=revanced-creator.keystore"
+	  if [ -f "revanced-creator.keystore" ]; then
+            export additional_args="--keystore=revanced-creator.keystore"
+	  fi
           export what_to_patch="twitch"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
@@ -146,6 +155,7 @@ jobs:
          run: sudo apt install aria2 curl ripgrep
 
        - name: Get keystore file
+         if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
          env:
            REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
          run: |
@@ -153,7 +163,9 @@ jobs:
        
        - name: Build reddit
          run: |
-          export additional_args="--keystore=revanced-creator.keystore"
+	  if [ -f "revanced-creator.keystore" ]; then
+            export additional_args="--keystore=revanced-creator.keystore"
+	  fi
           export what_to_patch="reddit"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
@@ -186,6 +198,7 @@ jobs:
          run: sudo apt install aria2 curl ripgrep
        
        - name: Get keystore file
+         if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
          env:
            REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
          run: |
@@ -193,8 +206,10 @@ jobs:
        
        - name: Build twitter
          run: |
-          export additional_args="--keystore=revanced-creator.keystore"
-          export what_to_patch="twitter"
+	  if [ -f "revanced-creator.keystore" ]; then
+            export additional_args="--keystore=revanced-creator.keystore"
+	  fi
+	  export what_to_patch="twitter"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
        - name: Check if revanced-twitter apk is created
@@ -226,6 +241,7 @@ jobs:
          run: sudo apt install aria2 curl ripgrep
 
        - name: Get keystore file
+         if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
          env:
            REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
          run: |
@@ -233,7 +249,9 @@ jobs:
 
        - name: Build tiktok
          run: |
-          export additional_args="--keystore=revanced-creator.keystore"
+	  if [ -f "revanced-creator.keystore" ]; then
+             export additional_args="--keystore=revanced-creator.keystore"
+	  fi
           export what_to_patch="tiktok"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 
@@ -266,6 +284,7 @@ jobs:
          run: sudo apt install aria2 curl ripgrep
        
        - name: Get keystore file
+         if: ${{ secrets.REVANCED_CREATOR_KEYSTORE != "" }}
          env:
            REVANCED_CREATOR_KEYSTORE: ${{ secrets.REVANCED_CREATOR_KEYSTORE }}
          run: |
@@ -273,7 +292,9 @@ jobs:
        
        - name: Build spotify
          run: |
-          export additional_args="--keystore=revanced-creator.keystore"
+	  if [ -f "revanced-creator.keystore" ]; then
+            export additional_args="--keystore=revanced-creator.keystore"
+	  fi
           export what_to_patch="spotify"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
 

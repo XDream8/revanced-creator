@@ -1,67 +1,53 @@
 name: Tests
-
 on:
-   push:
-     paths:
-       - '*.sh'
-   workflow_dispatch:
-
+  push:
+    paths:
+      - '*.sh'
+  workflow_dispatch:
 jobs:
   linux:
     runs-on: ubuntu-latest
-
     steps:
-       - name: Install Java
-         uses: actions/setup-java@v3
-         with:
-           distribution: 'zulu'
-           java-version: '17'
-
-       - name: Update the system
-         run: |
+      - name: Install Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - name: Update the system
+        run: |
           sudo apt-get update
           sudo apt-get upgrade
           sudo apt install curl grep
-
-       - name: Test by building youtube-revanced on Ubuntu
-         run: |
+      - name: Test by building youtube-revanced on Ubuntu
+        run: |
           # curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/revanced-creator.keystore
           # export additional_args="--keystore=revanced-creator.keystore"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
-
-       - name: Check if revanced-youtube apk is created
-         id: check_files
-         uses: andstor/file-existence-action@v1
-         with:
-           files: "revanced-*-non-root.apk"
-           allow_failure: true
+      - name: Check if revanced-youtube apk is created
+        id: check_files
+        uses: andstor/file-existence-action@v1
+        with:
+          files: "revanced-*-non-root.apk"
+          allow_failure: true
   windows:
     runs-on: windows-latest
-
     defaults:
       run:
         shell: wsl-bash {0}
-
     steps:
       - name: Setup WSL
         uses: Vampire/setup-wsl@v1
         with:
           distribution: Ubuntu-22.04
-          additional-packages:
-            curl
-            grep
-            gawk
-            openjdk-17-jdk
-
+          additional-packages: curl grep gawk openjdk-17-jdk
       - name: Test by building youtube-revanced on WSL
         run: |
           # curl -OL https://github.com/XDream8/revanced-creator/releases/download/v0.1/revanced-creator.keystore
           # export additional_args="--keystore=revanced-creator.keystore"
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
-
       - name: Check if revanced-youtube apk is created
         id: check_files
         uses: andstor/file-existence-action@v1
         with:
-           files: "revanced-*-non-root.apk"
-           allow_failure: true
+          files: "revanced-*-non-root.apk"
+          allow_failure: true
