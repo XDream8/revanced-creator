@@ -249,7 +249,7 @@ main() {
 	youtube)
 		apk_filename=YouTube-$apk_version.apk
 		integrations="enabled"
-		addarg "-e debugging"
+		addarg "-e enable-debugging"
 		;;
 	youtube-music)
 		apk_filename=YouTube-Music-$apk_version.apk
