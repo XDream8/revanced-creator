@@ -1,8 +1,8 @@
 pipeline:
   build:
     image: alpine:latest
-  commands:
-    - sh patch
+    commands:
+      - sh patch
     
 
 matrix:
