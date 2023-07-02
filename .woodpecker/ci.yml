@@ -1,14 +1,12 @@
 pipeline:
   build:
-    image: alpine:edge
-  environment:
-    - what_to_patch=${WHAT_TO_PATCH}
+    image: alpine:latest
   commands:
     - sh patch
     
 
 matrix:
-  WHAT_TO_PATCH:
+  what_to_patch:
     - youtube
     - youtube-music
     - reddit
