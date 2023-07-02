@@ -8,7 +8,7 @@ pipeline:
     
 
 matrix:
-  WHAT_TO_PATH:
+  WHAT_TO_PATCH:
     - youtube
     - youtube-music
     - reddit
