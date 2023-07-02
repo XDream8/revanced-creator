@@ -2,7 +2,7 @@ pipeline:
   build:
     image: alpine:latest
     commands:
-      - sh patch
+      - sh patch.sh
     
 
 matrix:
