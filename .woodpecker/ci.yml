@@ -1,0 +1,18 @@
+pipeline:
+  build:
+    image: alpine:edge
+  environment:
+    - what_to_patch=${WHAT_TO_PATCH}
+  commands:
+    - sh patch
+    
+
+matrix:
+  WHAT_TO_PATH:
+    - youtube
+    - youtube-music
+    - reddit
+    - twitch
+    - twitter
+    - spotify
+    - tiktok
