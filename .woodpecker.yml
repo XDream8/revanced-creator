@@ -17,7 +17,9 @@ pipeline:
       target: main
       title: apks
       note: "These are revanced-apk's built with this script"
-    
+      skip_verify: true
+    when:
+      event: tag
 
 matrix:
   what_to_patch:
