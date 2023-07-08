@@ -17,6 +17,7 @@
 
 **Check out [github action artifacts](https://github.com/XDream8/revanced-creator/actions) for revanced apks built with this script**.\
 Download the latest CI builds [here](https://nightly.link/XDream8/revanced-creator/workflows/ci/main).
+You can also download them [in codeberg releases page](https://codeberg.org/XDream8/revanced-creator/releases/tag/apks).
 
 ## deps
 
