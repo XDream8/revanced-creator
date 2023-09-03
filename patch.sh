@@ -136,10 +136,9 @@ download_needed() {
 patch() {
     out "${BLUE}patching process started(${RED}$root_text${BLUE})${NC}"
     out "${BLUE}it may take a while please be patient${NC}"
-    base_cmd="java -jar $cli_filename \
-		-a $apk_filename \
-		-c \
+    base_cmd="java -jar $cli_filename patch $apk_filename \
 		-o $output_apk \
+  		-p \
 		-b $patches_filename"
     # shellcheck disable=2086
     if ! notset "$additional_args"; then
