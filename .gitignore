@@ -1,8 +1,8 @@
-cache/
-revanced-cache/
+*cache/
 revanced*.keystore
 *.jar
 *.apk
 *.aria2
+*.st
 *aapt2*
-options.toml
+options.*

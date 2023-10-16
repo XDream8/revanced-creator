@@ -44,10 +44,22 @@ $ cd revanced-creator
 $ ./patch.sh
 ```
 
-### options
+## options
+there are two ways to pass config options:
+- flags
+- environment variables
 
-#### using custom apk
+### using cli flags
+to see all available flags:
+```sh
+$ ./patch.sh -h
+```
+usage:
+```sh
+$ ./patch.sh --patch=youtube --additional-args="-e <patch>" --downloader="curl"
+```
 
+### using custom apk
 here is how to patch user downloaded reddit apk\
 (!) if apk_filename is not set, script uses find to select an apk from the directory you are in randomly(if there is only one apk in the directory you are in it is fine)\
 (?) output_apk is optional
@@ -59,7 +71,7 @@ $ export output_apk=revanced-reddit.apk
 $ ./patch.sh
 ```
 
-#### additional_args
+### additional_args
 
 we include `enable-wide-searchbar` and `swipe-controls` patch and exclude `hide-shorts-button` here
 
@@ -68,14 +80,14 @@ $ export additional_args="-i enable-wide-searchbar -i swipe-controls -e hide-sho
 $ ./patch.sh
 ```
 
-#### what_to_patch(youtube, youtube-music, reddit or twitter)
+### what_to_patch(youtube, youtube-music, reddit or twitter)
 
 ```sh
 $ export what_to_patch="youtube-music"
 $ ./patch.sh
 ```
 
-#### output_apk
+### output_apk
 
 you can set output apk name with this
 
@@ -84,7 +96,7 @@ $ export output_apk="ReReddit.apk"
 $ ./patch.sh
 ```
 
-#### apk_version(defaults to latest)
+### apk_version(defaults to latest)
 
 **To see versions available see the releases section**
 
@@ -100,7 +112,7 @@ $ export root=0
 $ ./patch.sh
 ```
 
-#### downloader
+### downloader
 
 aria2, axel, curl, wget; they are detected in this order and the first detected is used
 
@@ -109,7 +121,7 @@ $ export downloader="axel -n 16"
 $ ./patch.sh
 ```
 
-#### or you can use all these options together
+### or you can use all these options together
 
 ```sh
 $ export root=0
@@ -119,6 +131,6 @@ $ export apk_version=17.27.39
 $ ./patch.sh
 ```
 
-### mentions
+## mentions
 
 - @halal-beef [added CI](https://github.com/XDream8/revanced-creator/pull/3) which was a great help
