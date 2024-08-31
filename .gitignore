@@ -1,8 +1,9 @@
 *cache/
 revanced*.keystore
+*.keystore
 *.jar
 *.apk
 *.aria2
 *.st
 *aapt2*
-options.*
+*options.json
