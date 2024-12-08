@@ -73,10 +73,10 @@ $ ./patch.sh
 
 ### additional_args
 
-we include `enable-wide-searchbar` and `swipe-controls` patch and exclude `hide-shorts-button` here
+in this example we are enabling `enable-wide-searchbar` and `swipe-controls` and disabling `hide-shorts-button` patch
 
 ```sh
-$ export additional_args="-i enable-wide-searchbar -i swipe-controls -e hide-shorts-button"
+$ export additional_args="-e enable-wide-searchbar -e swipe-controls -d hide-shorts-button"
 $ ./patch.sh
 ```
 
@@ -125,7 +125,7 @@ $ ./patch.sh
 
 ```sh
 $ export root=0
-$ export additional_args="-i enable-wide-searchbar -i swipe-controls -e hide-shorts-button"
+$ export additional_args="-e enable-wide-searchbar -e swipe-controls -d hide-shorts-button"
 $ export what_to_patch="youtube"
 $ export apk_version=17.27.39
 $ ./patch.sh

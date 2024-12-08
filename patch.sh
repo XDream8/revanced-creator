@@ -85,7 +85,7 @@ checkadb() {
 checkyt() {
     # shellcheck disable=2143
     if [ ! "$(adb shell cmd package list packages | $grep -o 'com.google.android.youtube')" ]; then
-        err "root variant: install $what_to_patch v${apk_version} on your device to mount w/ integrations, exiting!"
+        err "root variant: install $what_to_patch v${apk_version} on your device to mount, exiting!"
     fi
 }
 
@@ -100,26 +100,20 @@ get_version_info() {
 get_and_print_versions() {
     ## getting versions information
     out "${BLUE}getting latest versions info${NC}"
-    for i in cli patches integrations; do
+    for i in cli patches; do
         get_version_info "$i" &
-        if [ "$i" = "integrations" ] && [ "$integrations" = "enabled" ]; then
-            get_version_info "$i" &
-        fi
     done
 
     ## wait for getting versions to get finished
     wait
 
-    for i in cli patches integrations; do
+    for i in cli patches; do
         export "revanced_${i}_version=$(cat cache/tmp.revanced_$i)"
     done
 
     ## print info
     log "revanced_cli_version : $revanced_cli_version"
     log "revanced_patches_version : $revanced_patches_version"
-    if [ "$integrations" = "enabled" ]; then
-        log "revanced_integrations_version : $revanced_integrations_version"
-    fi
 }
 
 get_stock_apk_version() {
@@ -134,7 +128,7 @@ get_stock_apk_version() {
 
 remove_old() {
     if check_dep "find"; then
-        find . -maxdepth 1 -type f -name "revanced-*.jar" ! \( -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$integrations_filename" -or -name "$apk_filename" \) -delete && out "${BLUE}removed old files${NC}"
+        find . -maxdepth 1 -type f -name "revanced-*.jar" ! \( -name "*.keystore" -or -name "$cli_filename" -or -name "$patches_filename" -or -name "$apk_filename" \) -delete && out "${BLUE}removed old files${NC}"
     fi
 }
 
@@ -146,7 +140,6 @@ download_needed() {
     for i in \
         $cli_link \
         $patches_link \
-        $integrations_link \
         $aapt2_link \
         $apk_link; do
         n=$((n + 1))
@@ -159,7 +152,7 @@ download_needed() {
 patch() {
     out "${BLUE}patching process started(${RED}$root_text${BLUE})${NC}"
     out "${BLUE}it may take a while please be patient${NC}"
-    base_cmd="java -jar $cli_filename patch $apk_filename -o $output_apk -p -b $patches_filename"
+    base_cmd="java -jar $cli_filename patch $apk_filename -o $output_apk -p $patches_filename"
     # shellcheck disable=2086
     $base_cmd $additional_args
 }
@@ -217,7 +210,7 @@ main() {
         out "${RED}please be sure that your phone is connected to your pc, waiting 5 seconds${NC}"
         sleep 5s
         checkadb
-        addarg "-d $device_id -e microg-support --mount"
+        addarg "-d $device_id --disable=microg-support --mount"
     fi
 
     # termux support
@@ -241,8 +234,7 @@ main() {
     youtube)
         get_stock_apk_version
         apk_filename=YouTube-$apk_version.apk
-        integrations="enabled"
-        addarg "-e enable-debugging"
+        addarg "--disable=enable-debugging"
         ;;
     youtube-music)
         get_stock_apk_version
@@ -251,13 +243,11 @@ main() {
     twitch)
         get_stock_apk_version
         apk_filename=Twitch-$apk_version.apk
-        integrations="enabled"
-        addarg "-e debug-mode"
+        addarg "--disable=debug-mode"
         ;;
     twitter)
         get_stock_apk_version
         apk_filename=Twitter-$apk_version.apk
-        integrations="enabled"
         ;;
     reddit)
         get_stock_apk_version
@@ -266,7 +256,6 @@ main() {
     tiktok)
         get_stock_apk_version
         apk_filename=TikTok-$apk_version.apk
-        integrations="enabled"
         ;;
     spotify)
         get_stock_apk_version
@@ -286,7 +275,6 @@ main() {
             err "apk file does not exist, please specify an existing apk file using 'apk_filename' arg"
         fi
         apk_filename="$what_to_patch"
-        integrations="enabled"
         [ -z "$output_apk" ] && output_apk=revanced-$apk_filename
         log "custom apk : $apk_filename"
         ;;
@@ -297,13 +285,7 @@ main() {
 
     ## set filenames
     cli_filename=revanced-cli-$revanced_cli_version-all.jar
-    patches_filename=revanced-patches-$revanced_patches_version.jar
-    integrations_filename=revanced-integrations-$revanced_integrations_version.apk
-
-    ## add integrations arg
-    if [ "$integrations" = "enabled" ]; then
-        addarg "-m $integrations_filename"
-    fi
+    patches_filename=patches-$revanced_patches_version.rvp
 
     ## set output apk name
     notset "$output_apk" && {
@@ -318,10 +300,6 @@ main() {
 
     [ ! -f "$cli_filename" ] && cli_link=https://github.com/revanced/revanced-cli/releases/download/v$revanced_cli_version/$cli_filename
     [ ! -f "$patches_filename" ] && patches_link=https://github.com/revanced/revanced-patches/releases/download/v$revanced_patches_version/$patches_filename
-    if [ "$integrations" = "enabled" ]; then
-        [ ! -f "$integrations_filename" ] && integrations_link=https://github.com/revanced/revanced-integrations/releases/download/v$revanced_integrations_version/$integrations_filename
-    fi
-
     download_needed
 
     if [ "$root" -eq 1 ]; then
