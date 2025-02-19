@@ -14,9 +14,9 @@ jobs:
     needs: update-system
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -36,12 +36,12 @@ jobs:
           curl -OL https://github.com/XDream8/revanced-creator/releases/download/youtube/vanced-microg.apk
       - name: Check if revanced-youtube apk is created
         id: check_files
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: "revanced-youtube-*-non-root.apk"
           fail: true
       - name: Upload Build Artifact(youtube)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: revanced-youtube
           path: |
@@ -51,9 +51,9 @@ jobs:
     needs: update-system
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -73,12 +73,12 @@ jobs:
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
       - name: Check if revanced-music apk is created
         id: check_files
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: "revanced-music-*-non-root.apk"
           fail: true
       - name: Upload Build Artifact(YouTube-Music)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: revanced-music
           path: revanced-music-*-non-root.apk
@@ -86,9 +86,9 @@ jobs:
     needs: update-system
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -108,12 +108,12 @@ jobs:
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
       - name: Check if revanced-twitch apk is created
         id: check_files
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: "revanced-twitch-*-non-root.apk"
           fail: true
       - name: Upload Build Artifact(Twitch)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: revanced-twitch
           path: revanced-twitch-*-non-root.apk
@@ -121,9 +121,9 @@ jobs:
     needs: update-system
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -143,12 +143,12 @@ jobs:
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
       - name: Check if revanced-reddit apk is created
         id: check_files
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: "revanced-reddit-*-non-root.apk"
           fail: true
       - name: Upload Build Artifact(Reddit)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: revanced-reddit
           path: revanced-reddit-*-non-root.apk
@@ -156,9 +156,9 @@ jobs:
     needs: update-system
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -178,12 +178,12 @@ jobs:
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
       - name: Check if revanced-twitter apk is created
         id: check_files
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: "revanced-twitter-*-non-root.apk"
           fail: true
       - name: Upload Build Artifact(Twitter)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: revanced-twitter
           path: revanced-twitter-*-non-root.apk
@@ -191,9 +191,9 @@ jobs:
     needs: update-system
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -213,12 +213,12 @@ jobs:
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
       - name: Check if revanced-tiktok apk is created
         id: check_files
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: "revanced-tiktok-*-non-root.apk"
           fail: true
       - name: Upload Build Artifact(TikTok)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: revanced-tiktok
           path: revanced-tiktok-*-non-root.apk
@@ -226,9 +226,9 @@ jobs:
     needs: update-system
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install Java
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
           java-version: '17'
@@ -248,12 +248,12 @@ jobs:
           sh -c "$(curl https://raw.githubusercontent.com/XDream8/revanced-creator/main/patch.sh)"
       - name: Check if revanced-spotify apk is created
         id: check_files
-        uses: andstor/file-existence-action@v2
+        uses: andstor/file-existence-action@v3
         with:
           files: "revanced-spotify-*-non-root.apk"
           fail: true
       - name: Upload Build Artifact(Spotify)
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: revanced-spotify
           path: revanced-spotify-*-non-root.apk
