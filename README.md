@@ -11,17 +11,16 @@
 
 **What does this do?**
 
-1. downloading the latest [revanced-cli](https://github.com/revanced/revanced-cli), [revanced-patches](https://github.com/revanced/revanced-patches) and [revanced-integrations](https://github.com/revanced/revanced-integrations).
+1. downloading the latest [revanced-cli](https://github.com/revanced/revanced-cli), [revanced-patches](https://github.com/revanced/revanced-patches).
 2. downloading the latest supported youtube(yt-music, reddit, twitter, tiktok) version
 3. creating revanced app according to [revanced-documentation](https://github.com/revanced/revanced-documentation)
 
 **Check out [github action artifacts](https://github.com/XDream8/revanced-creator/actions) for revanced apks built with this script**.\
 Download the latest CI builds [here](https://nightly.link/XDream8/revanced-creator/workflows/ci/main).
-You can also download them [in codeberg releases page](https://codeberg.org/XDream8/revanced-creator/releases/tag/apks).
 
 ## deps
 
-- sh(dash or bash)
+- sh(any posix compatible shell: dash,bash,zsh...)
 - curl is used for fetching release numbers, aria2, axel, curl or wget is used for downloading needed files
 - awk
 - java(17)
@@ -61,6 +60,13 @@ $ ./patch.sh --patch=youtube --additional-args="-e <patch>" --downloader="curl"
 
 ### using custom apk
 here is how to patch user downloaded reddit apk\
+
+- using flags
+```sh
+$ ./patch.sh --patch=reddit.apk 
+```
+
+- using environment variables
 (!) if apk_filename is not set, script uses find to select an apk from the directory you are in randomly(if there is only one apk in the directory you are in it is fine)\
 (?) output_apk is optional
 
@@ -74,6 +80,13 @@ $ ./patch.sh
 ### additional_args
 
 in this example we are enabling `enable-wide-searchbar` and `swipe-controls` and disabling `hide-shorts-button` patch
+
+- using flags
+```sh
+$ ./patch.sh --additional-args="-e enable-wide-searchbar -e swipe-controls -d hide-shorts-button"
+```
+
+- using environment variables
 
 ```sh
 $ export additional_args="-e enable-wide-searchbar -e swipe-controls -d hide-shorts-button"
@@ -107,8 +120,17 @@ $ ./patch.sh
 
 #### root(defaults to 0)
 
+- using flags
+
 ```sh
-$ export root=0
+$ ./patch.sh --root
+```
+
+
+- using environment variables
+
+```sh
+$ export root=1
 $ ./patch.sh
 ```
 
@@ -116,12 +138,28 @@ $ ./patch.sh
 
 aria2, axel, curl, wget; they are detected in this order and the first detected is used
 
+- using flags
+```sh
+$ ./patch.sh --downloader="axel -n 16"
+
+```
+
+- using environment variables
+
 ```sh
 $ export downloader="axel -n 16"
 $ ./patch.sh
 ```
 
 ### or you can use all these options together
+
+- using flags
+
+```sh
+$ ./patch.sh --root --additional-args="-e enable-wide-searchbar -e swipe-controls -d hide-shorts-button" --patch=youtube
+```
+
+- using environment variables
 
 ```sh
 $ export root=0
