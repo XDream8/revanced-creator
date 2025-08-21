@@ -91,8 +91,8 @@ checkyt() {
 
 get_version_info() {
     ## revanced cli
-    resp=$(curl -sL -H 'User-Agent: revanced-creator' "https://github.com/revanced/revanced-$1/releases/latest")
-    ver=$(printf '%s' "$resp" | $grep -oe "v[0-9].*[0-9]" | awk -F'/' 'NR==1 {print $1}')
+    resp=$(curl -sL "https://github.com/ReVanced/revanced-$1/releases/latest")
+    ver=$(printf '%s' "$resp" | $grep -oe "tag/v[0-9].*[0-9]" | sort -n | awk -F'/' 'NR==1 {print $NF}')
     ver=${ver#v}
     printf '%s\n' "$ver" >"cache/tmp.revanced_$1"
 }
@@ -118,10 +118,14 @@ get_and_print_versions() {
 
 get_stock_apk_version() {
     notset "$apk_version" && {
-        apk_version=$(curl -sL -H 'User-Agent: revanced-creator' "https://api.github.com/repos/XDream8/revanced-creator/releases" | sed 's/"name":"/\n/g; s/.apk",/\n/g' | $grep -ioe "^$what_to_patch-[0-9].*[0-9]" | $grep -oe "[0-9].*[0-9]" | sort -n | awk 'END{print}')
+        apk_version=$(curl -sL "https://api.github.com/repos/XDream8/revanced-creator/releases" | sed 's/"name":"/\n/g; s/.apk",/\n/g' | $grep -ioe "^$what_to_patch-[0-9].*[0-9]" | $grep -oe "[0-9].*[0-9]" | sort -n | awk 'END{print}')
     }
     notset "$apk_version" && {
-        err "getting $what_to_patch apk version failed, exiting!"
+        if curl -sL "https://api.github.com" | grep -q "API rate limit exceeded for"; then
+            err "getting $what_to_patch apk version failed: github rate limit exceeded"
+        else
+            err "getting $what_to_patch apk version failed, exiting!"
+        fi
     }
     log "$what_to_patch version to be patched : $apk_version"
 }

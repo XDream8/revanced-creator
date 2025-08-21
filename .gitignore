@@ -9,3 +9,4 @@ revanced*.keystore
 *aapt2*
 *options.json
 *temporary-files/
+.conform*
