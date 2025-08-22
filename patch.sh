@@ -118,7 +118,7 @@ get_and_print_versions() {
 
 get_stock_apk_version() {
     notset "$apk_version" && {
-        apk_version=$(curl -sL "https://api.github.com/repos/XDream8/revanced-creator/releases" | sed 's/"name":"/\n/g; s/.apk",/\n/g' | $grep -ioe "^$what_to_patch-[0-9].*[0-9]" | $grep -oe "[0-9].*[0-9]" | sort -n | awk 'END{print}')
+        apk_version=$(curl -sL "https://api.github.com/repos/XDream8/revanced-creator/releases" | $grep -ioe "$what_to_patch-[0-9].*[0-9].apk" | $grep -oe "[0-9].*[0-9]" | sort -n | awk 'END{print}')
     }
     notset "$apk_version" && {
         if curl -sL "https://api.github.com" | grep -q "API rate limit exceeded for"; then
