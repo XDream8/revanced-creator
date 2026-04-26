@@ -44,31 +44,39 @@ $ ./patch.sh
 ```
 
 ## options
+
 there are two ways to pass config options:
+
 - flags
 - environment variables
 
 ### using cli flags
+
 to see all available flags:
+
 ```sh
 $ ./patch.sh -h
 ```
+
 usage:
+
 ```sh
 $ ./patch.sh --patch=youtube --additional-args="-e <patch>" --downloader="curl"
 ```
 
 ### using custom apk
-here is how to patch user downloaded reddit apk\
+
+here is how to patch user downloaded reddit apk
 
 - using flags
+
 ```sh
-$ ./patch.sh --patch=reddit.apk 
+$ ./patch.sh --patch=reddit.apk
 ```
 
 - using environment variables
-(!) if apk_filename is not set, script uses find to select an apk from the directory you are in randomly(if there is only one apk in the directory you are in it is fine)\
-(?) output_apk is optional
+  (!) if apk_filename is not set, script uses find to select an apk from the directory you are in randomly(if there is only one apk in the directory you are in it is fine)\
+  (?) output_apk is optional
 
 ```sh
 $ export what_to_patch="custom"
@@ -82,6 +90,7 @@ $ ./patch.sh
 in this example we are enabling `enable-wide-searchbar` and `swipe-controls` and disabling `hide-shorts-button` patch
 
 - using flags
+
 ```sh
 $ ./patch.sh --additional-args="-e enable-wide-searchbar -e swipe-controls -d hide-shorts-button"
 ```
@@ -126,7 +135,6 @@ $ ./patch.sh
 $ ./patch.sh --root
 ```
 
-
 - using environment variables
 
 ```sh
@@ -139,6 +147,7 @@ $ ./patch.sh
 aria2, axel, curl, wget; they are detected in this order and the first detected is used
 
 - using flags
+
 ```sh
 $ ./patch.sh --downloader="axel -n 16"
 
