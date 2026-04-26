@@ -156,7 +156,7 @@ download_needed() {
 patch() {
 	out "${BLUE}patching process started(${RED}$root_text${BLUE})${NC}"
 	out "${BLUE}it may take a while please be patient${NC}"
-	base_cmd="java -jar $cli_filename patch $apk_filename -o $output_apk -p $patches_filename"
+	base_cmd="java -jar $cli_filename patch -bp $patches_filename $apk_filename -o $output_apk"
 	# shellcheck disable=2086
 	$base_cmd $additional_args
 }

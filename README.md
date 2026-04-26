@@ -9,6 +9,13 @@
   <img alt="GitHub forks" src="https://img.shields.io/github/forks/XDream8/revanced-creator?style=flat-square">
 </p>
 
+> [!CAUTION]
+> **Maintenance Mode & Project Status**
+>
+> This repository is currently in **maintenance mode**. Pull requests and issues will not be reviewed promptly, and only critical fixes will be addressed.
+>
+> **Note:** `revanced-creator` is currently non-functional. A full rewrite of this tool(that uses morphe patches) is planned. In the meantime, please refer to the official status here: [Where is ReVanced Patches?](https://github.com/ReVanced/where-is-revanced-patches)
+
 **What does this do?**
 
 1. downloading the latest [revanced-cli](https://github.com/revanced/revanced-cli), [revanced-patches](https://github.com/revanced/revanced-patches).
